@@ -165,13 +165,30 @@ public class VueControleur extends JFrame implements Observer {
                             tabJLabel[x][y].setIcon(icoRoiBlanc);
                         } else if (c.getPiece() instanceof Reine) {
                             tabJLabel[x][y].setIcon(icoReineBlanc);
+                        } else if (c.getPiece() instanceof Cavalier) {
+                            tabJLabel[x][y].setIcon(icoCavalierBlanc);
+                        } else if (c.getPiece() instanceof Fou) {
+                            tabJLabel[x][y].setIcon(icoFouBlanc);
+                        } else if (c.getPiece() instanceof Pion) {
+                            tabJLabel[x][y].setIcon(icoPionBlanc);
+                        } else if (c.getPiece() instanceof Tour) {
+                            tabJLabel[x][y].setIcon(icoTourBlanc);
+                        } else if (c.getPiece() instanceof Roi) {
+                            tabJLabel[x][y].setIcon(icoRoiNoir);
+                        } else if (c.getPiece() instanceof Reine) {
+                            tabJLabel[x][y].setIcon(icoReineNoir);
+                        } else if (c.getPiece() instanceof Cavalier) {
+                            tabJLabel[x][y].setIcon(icoCavalierNoir);
+                        } else if (c.getPiece() instanceof Fou) {
+                            tabJLabel[x][y].setIcon(icoFouNoir);
+                        } else if (c.getPiece() instanceof Pion) {
+                            tabJLabel[x][y].setIcon(icoPionNoir);
+                        } else if (c.getPiece() instanceof Tour) {
+                            tabJLabel[x][y].setIcon(icoTourNoir);
+                        } else {
+                            tabJLabel[x][y].setIcon(null);
                         }
-                    } else {
-                        tabJLabel[x][y].setIcon(null);
-
                     }
-
-
                 }
 
             }
