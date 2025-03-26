@@ -78,6 +78,15 @@ public class Plateau extends Observable {
         Case cTourB1 = grilleCases[0][7];
         Case cTourB2 = grilleCases[7][7];
 
+        Case cPionB1 = grilleCases[0][6];
+        Case cPionB2 = grilleCases[1][6];
+        Case cPionB3 = grilleCases[2][6];
+        Case cPionB4 = grilleCases[3][6];
+        Case cPionB5 = grilleCases[4][6];
+        Case cPionB6 = grilleCases[5][6];
+        Case cPionB7 = grilleCases[6][6];
+        Case cPionB8 = grilleCases[7][6];
+
         roiB.allerSurCase(cRoiB);
         reineB.allerSurCase(cReineB);
 
@@ -89,6 +98,15 @@ public class Plateau extends Observable {
 
         tourB1.allerSurCase(cTourB1);
         tourB2.allerSurCase(cTourB2);
+
+        pionB1.allerSurCase(cPionB1);
+        pionB2.allerSurCase(cPionB2);
+        pionB3.allerSurCase(cPionB3);
+        pionB4.allerSurCase(cPionB4);
+        pionB5.allerSurCase(cPionB5);
+        pionB6.allerSurCase(cPionB6);
+        pionB7.allerSurCase(cPionB7);
+        pionB8.allerSurCase(cPionB8);
 
         setChanged();
         notifyObservers();
