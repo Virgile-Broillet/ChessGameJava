@@ -7,6 +7,7 @@ package modele.plateau;
 
 
 import modele.jeu.Piece;
+import modele.jeu.Reine;
 import modele.jeu.Roi;
 
 import java.awt.Point;
@@ -45,8 +46,11 @@ public class Plateau extends Observable {
 
     public void placerPieces() {
         Roi roi = new Roi(this);
-        Case cR = grilleCases[4][7];
-        roi.allerSurCase(cR);
+        Case cRoi = grilleCases[4][7];
+        roi.allerSurCase(cRoi);
+        Reine reine = new Reine(this);
+        Case cReine = grilleCases[3][7];
+        reine.allerSurCase(cReine);
 
         setChanged();
         notifyObservers();
