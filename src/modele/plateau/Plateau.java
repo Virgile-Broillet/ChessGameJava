@@ -49,7 +49,6 @@ public class Plateau extends Observable {
         Cavalier cavalierB1 = new Cavalier(this);
         Cavalier cavalierB2 = new Cavalier(this);
 
-
         Fou fouB1 = new Fou(this);
         Fou fouB2 = new Fou(this);
 
@@ -64,7 +63,6 @@ public class Plateau extends Observable {
         Pion pionB3 = new Pion(this);
         Pion pionB2 = new Pion(this);
         Pion pionB1 = new Pion(this);
-
 
         Case cRoiB = grilleCases[4][7];
         Case cReineB = grilleCases[3][7];
@@ -107,6 +105,70 @@ public class Plateau extends Observable {
         pionB6.allerSurCase(cPionB6);
         pionB7.allerSurCase(cPionB7);
         pionB8.allerSurCase(cPionB8);
+
+        Roi roiN = new Roi(this);
+        Reine reineN = new Reine(this);
+
+        Cavalier cavalierN1 = new Cavalier(this);
+        Cavalier cavalierN2 = new Cavalier(this);
+
+        Fou fouN1 = new Fou(this);
+        Fou fouN2 = new Fou(this);
+
+        Tour tourN1 = new Tour(this);
+        Tour tourN2 = new Tour(this);
+
+        Pion pionN8 = new Pion(this);
+        Pion pionN7 = new Pion(this);
+        Pion pionN6 = new Pion(this);
+        Pion pionN5 = new Pion(this);
+        Pion pionN4 = new Pion(this);
+        Pion pionN3 = new Pion(this);
+        Pion pionN2 = new Pion(this);
+        Pion pionN1 = new Pion(this);
+
+        Case cRoiN = grilleCases[4][0];
+        cRoiN.p.isWhite = false;
+        Case cReineN = grilleCases[3][0];
+
+        Case cFouN1 = grilleCases[2][0];
+        Case cFouN2 = grilleCases[5][0];
+
+        Case cCavalierN1 = grilleCases[6][0];
+        Case cCavalierN2 = grilleCases[1][0];
+
+        Case cTourN1 = grilleCases[0][0];
+        Case cTourN2 = grilleCases[7][0];
+
+        Case cPionN1 = grilleCases[0][1];
+        Case cPionN2 = grilleCases[1][1];
+        Case cPionN3 = grilleCases[2][1];
+        Case cPionN4 = grilleCases[3][1];
+        Case cPionN5 = grilleCases[4][1];
+        Case cPionN6 = grilleCases[5][1];
+        Case cPionN7 = grilleCases[6][1];
+        Case cPionN8 = grilleCases[7][1];
+
+        roiN.allerSurCase(cRoiN);
+        reineN.allerSurCase(cReineN);
+
+        fouN1.allerSurCase(cFouN1);
+        fouN2.allerSurCase(cFouN2);
+
+        cavalierN1.allerSurCase(cCavalierN1);
+        cavalierN2.allerSurCase(cCavalierN2);
+
+        tourN1.allerSurCase(cTourN1);
+        tourN2.allerSurCase(cTourN2);
+
+        pionN1.allerSurCase(cPionN1);
+        pionN2.allerSurCase(cPionN2);
+        pionN3.allerSurCase(cPionN3);
+        pionN4.allerSurCase(cPionN4);
+        pionN5.allerSurCase(cPionN5);
+        pionN6.allerSurCase(cPionN6);
+        pionN7.allerSurCase(cPionN7);
+        pionN8.allerSurCase(cPionN8);
 
         setChanged();
         notifyObservers();

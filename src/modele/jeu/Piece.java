@@ -13,7 +13,7 @@ public abstract class Piece {
     protected Case c;
     protected Plateau plateau;
     protected DecorateurCasesAccessibles decorateurCasesAccessibles;
-
+    public Boolean isWhite;
     public Piece(Plateau _plateau) {
         plateau = _plateau;
 

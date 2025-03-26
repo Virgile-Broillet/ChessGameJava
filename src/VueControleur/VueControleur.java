@@ -20,8 +20,8 @@ import modele.plateau.Plateau;
  *
  */
 public class VueControleur extends JFrame implements Observer {
-    private Plateau plateau; // référence sur une classe de modèle : permet d'accéder aux données du modèle pour le rafraichissement, permet de communiquer les actions clavier (ou souris)
-    private Jeu jeu;
+    private final Plateau plateau; // référence sur une classe de modèle : permet d'accéder aux données du modèle pour le rafraichissement, permet de communiquer les actions clavier (ou souris)
+    private final Jeu jeu;
     private final int sizeX; // taille de la grille affichée
     private final int sizeY;
     private static final int pxCase = 50; // nombre de pixel par case
@@ -51,8 +51,8 @@ public class VueControleur extends JFrame implements Observer {
     public VueControleur(Jeu _jeu) {
         jeu = _jeu;
         plateau = jeu.getPlateau();
-        sizeX = plateau.SIZE_X;
-        sizeY = plateau.SIZE_Y;
+        sizeX = Plateau.SIZE_X;
+        sizeY = Plateau.SIZE_Y;
 
 
 
@@ -67,6 +67,7 @@ public class VueControleur extends JFrame implements Observer {
 
 
     private void chargerLesIcones() {
+
         icoRoiBlanc = chargerIcone("Images/wK.png");
         icoReineBlanc = chargerIcone("images/wQ.png");
         icoCavalierBlanc = chargerIcone("images/wN.png");
@@ -120,6 +121,9 @@ public class VueControleur extends JFrame implements Observer {
 
                         if (caseClic1 == null) {
                             caseClic1 = plateau.getCases()[xx][yy];
+                            /*if (plateau.getCases()[xx][yy].getPiece() == null) {
+                                caseClic1 = null;
+                            }*/
                         } else {
                             caseClic2 = plateau.getCases()[xx][yy];
                             jeu.envoyerCoup(new Coup(caseClic1, caseClic2));
@@ -161,7 +165,7 @@ public class VueControleur extends JFrame implements Observer {
                     Piece e = c.getPiece();
 
                     if (e!= null) {
-                        if (c.getPiece() instanceof Roi) {
+                        if (c.getPiece() instanceof Roi && ) {
                             tabJLabel[x][y].setIcon(icoRoiBlanc);
                         } else if (c.getPiece() instanceof Reine) {
                             tabJLabel[x][y].setIcon(icoReineBlanc);
