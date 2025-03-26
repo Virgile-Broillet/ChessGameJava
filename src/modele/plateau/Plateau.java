@@ -52,6 +52,13 @@ public class Plateau extends Observable {
         Case cReine = grilleCases[3][7];
         reine.allerSurCase(cReine);
 
+
+
+
+
+
+        
+
         setChanged();
         notifyObservers();
 
