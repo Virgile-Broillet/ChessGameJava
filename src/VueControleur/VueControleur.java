@@ -9,11 +9,8 @@ import java.util.Observer;
 import javax.swing.*;
 
 
-import modele.jeu.Coup;
-import modele.jeu.Jeu;
+import modele.jeu.*;
 import modele.plateau.Case;
-import modele.jeu.Piece;
-import modele.jeu.Roi;
 import modele.plateau.Plateau;
 
 
@@ -30,6 +27,7 @@ public class VueControleur extends JFrame implements Observer {
     private static final int pxCase = 50; // nombre de pixel par case
     // icones affichées dans la grille
     private ImageIcon icoRoi;
+    private ImageIcon icoReine;
 
     private Case caseClic1; // mémorisation des cases cliquées
     private Case caseClic2;
@@ -58,8 +56,7 @@ public class VueControleur extends JFrame implements Observer {
 
     private void chargerLesIcones() {
         icoRoi = chargerIcone("Images/wK.png");
-
-
+        icoReine = chargerIcone("images/wQ.png");
     }
 
     private ImageIcon chargerIcone(String urlIcone) {
@@ -142,9 +139,9 @@ public class VueControleur extends JFrame implements Observer {
 
                     if (e!= null) {
                         if (c.getPiece() instanceof Roi) {
-
                             tabJLabel[x][y].setIcon(icoRoi);
-
+                        } else if (c.getPiece() instanceof Reine) {
+                            tabJLabel[x][y].setIcon(icoReine);
                         }
                     } else {
                         tabJLabel[x][y].setIcon(null);
