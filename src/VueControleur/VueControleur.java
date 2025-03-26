@@ -165,7 +165,7 @@ public class VueControleur extends JFrame implements Observer {
                     Piece e = c.getPiece();
 
                     if (e!= null) {
-                        if (c.getPiece() instanceof Roi && ) {
+                        if (c.getPiece() instanceof Roi) {
                             tabJLabel[x][y].setIcon(icoRoiBlanc);
                         } else if (c.getPiece() instanceof Reine) {
                             tabJLabel[x][y].setIcon(icoReineBlanc);
