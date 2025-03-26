@@ -13,9 +13,9 @@ import modele.plateau.Plateau;
 import java.util.ArrayList;
 
 
-public class Pion extends Piece
+public class Cavalier extends Piece
 {
-    public Pion(Plateau _plateau) {
+    public Cavalier(Plateau _plateau) {
         super(_plateau);
         decorateurCasesAccessibles = new DecorateurCasesEnLigne(null);
     }
