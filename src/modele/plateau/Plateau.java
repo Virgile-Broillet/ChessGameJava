@@ -19,7 +19,7 @@ public class Plateau extends Observable {
     public static final int SIZE_Y = 8;
 
 
-    private HashMap<Case, Point> map = new  HashMap<Case, Point>(); // permet de récupérer la position d'une case à partir de sa référence
+    protected HashMap<Case, Point> map = new  HashMap<Case, Point>(); // permet de récupérer la position d'une case à partir de sa référence
     private Case[][] grilleCases = new Case[SIZE_X][SIZE_Y]; // permet de récupérer une case à partir de ses coordonnées
 
     public Plateau() {
@@ -81,6 +81,7 @@ public class Plateau extends Observable {
         pionB1.isWhite = true;
 
         Case cRoiB = grilleCases[4][7];
+
         Case cReineB = grilleCases[3][7];
 
         Case cFouB1 = grilleCases[2][7];
@@ -100,6 +101,24 @@ public class Plateau extends Observable {
         Case cPionB6 = grilleCases[5][6];
         Case cPionB7 = grilleCases[6][6];
         Case cPionB8 = grilleCases[7][6];
+
+        map.put(cRoiB, new Point(4, 7));
+        map.put(cReineB, new Point(3, 7));
+        map.put(cFouB1, new Point(2, 7));
+        map.put(cFouB2, new Point(5, 7));
+        map.put(cCavalierB1, new Point(6, 7));
+        map.put(cCavalierB2, new Point(1, 7));
+        map.put(cTourB1, new Point(0, 7));
+        map.put(cTourB2, new Point(7, 7));
+
+        map.put(cPionB1, new Point(0, 6));
+        map.put(cPionB2, new Point(1, 6));
+        map.put(cPionB3, new Point(2, 6));
+        map.put(cPionB4, new Point(3, 6));
+        map.put(cPionB5, new Point(4, 6));
+        map.put(cPionB6, new Point(5, 6));
+        map.put(cPionB7, new Point(6, 6));
+        map.put(cPionB8, new Point(7, 6));
 
         roiB.allerSurCase(cRoiB);
         reineB.allerSurCase(cReineB);
@@ -228,10 +247,10 @@ public class Plateau extends Observable {
     private boolean contenuDansGrille(Point p) {
         return p.x >= 0 && p.x < SIZE_X && p.y >= 0 && p.y < SIZE_Y;
     }
-    
+
     private Case caseALaPosition(Point p) {
         Case retour = null;
-        
+
         if (contenuDansGrille(p)) {
             retour = grilleCases[p.x][p.y];
         }

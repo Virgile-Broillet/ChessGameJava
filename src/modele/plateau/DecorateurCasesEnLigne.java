@@ -23,4 +23,3 @@ public class DecorateurCasesEnLigne extends DecorateurCasesAccessibles {
         return retour;
     }
 }
-

@@ -28,7 +28,12 @@ public class Case {
     public Piece getPiece() {
         return p;
     }
-/*
+
+    public boolean estLibre() {
+        return p == null;
+    }
+
+    /*
     public void setEntite(Piece _e) {
 
         p = _e;

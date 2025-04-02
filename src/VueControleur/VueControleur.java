@@ -4,14 +4,14 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.*;
 
 
 import modele.jeu.*;
-import modele.plateau.Case;
-import modele.plateau.Plateau;
+import modele.plateau.*;
 
 
 /** Cette classe a deux fonctions :
@@ -24,7 +24,7 @@ public class VueControleur extends JFrame implements Observer {
     private final Jeu jeu;
     private final int sizeX; // taille de la grille affichée
     private final int sizeY;
-    private static final int pxCase = 50; // nombre de pixel par case
+    private static final int pxCase = 100; // nombre de pixel par case
     // icones affichées dans la grille
     private ImageIcon icoRoiBlanc;
     private ImageIcon icoReineBlanc;
@@ -116,22 +116,42 @@ public class VueControleur extends JFrame implements Observer {
                 final int yy = y;
                 // écouteur de clics
                 jlab.addMouseListener(new MouseAdapter() {
+
                     @Override
                     public void mouseClicked(MouseEvent e) {
-
                         if (caseClic1 == null) {
                             caseClic1 = plateau.getCases()[xx][yy];
-                            /*if (plateau.getCases()[xx][yy].getPiece() == null) {
-                                caseClic1 = null;
-                            }*/
+
+                            if (caseClic1.getPiece() != null) {
+                                DecorateurCasesAccessibles mouvementPiece = null;
+
+                                // Choisir le décorateur en fonction de la pièce
+                                if (caseClic1.getPiece() instanceof Roi) {
+                                    mouvementPiece = new DecorateurCasesEnDiagonale(new DecorateurCasesEnLigne(null)); // Déplacement limité du Roi
+                                } else if (caseClic1.getPiece() instanceof Reine) {
+                                    mouvementPiece = new DecorateurCasesEnLigne(new DecorateurCasesEnDiagonale(null)); // Reine = Tour + Fou
+                                } else if (caseClic1.getPiece() instanceof Fou) {
+                                    mouvementPiece = new DecorateurCasesEnDiagonale(null);
+                                } else if (caseClic1.getPiece() instanceof Tour) {
+                                    mouvementPiece = new DecorateurCasesEnLigne(null);
+                                }
+
+                                // Afficher les cases accessibles si un mouvement est défini
+                                if (mouvementPiece != null) {
+                                    ArrayList<ArrayList<String>> casesPossibles = mouvementPiece.getCasesPossibles();
+                                    System.out.println("Cases accessibles : " + casesPossibles);
+                                }
+                            }
+
                         } else {
                             caseClic2 = plateau.getCases()[xx][yy];
                             jeu.envoyerCoup(new Coup(caseClic1, caseClic2));
                             caseClic1 = null;
                             caseClic2 = null;
                         }
-
                     }
+
+
                 });
 
 
