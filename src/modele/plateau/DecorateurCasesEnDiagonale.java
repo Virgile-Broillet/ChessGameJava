@@ -9,6 +9,17 @@ public class DecorateurCasesEnDiagonale extends DecorateurCasesAccessibles {
 
     @Override
     public ArrayList<String> getMesCasesPossibles() {
-        return null;
+        ArrayList<String> casesPossibles = new ArrayList<>();
+        // Logique pour les déplacements en diagonale (ex. Fou)
+        casesPossibles.add("A1"); // Exemple simplifié
+        casesPossibles.add("B2");
+        return casesPossibles;
+    }
+
+    @Override
+    public ArrayList<ArrayList<String>> getCasesPossibles() {
+        ArrayList<ArrayList<String>> retour = super.getCasesPossibles();
+        retour.add(getMesCasesPossibles());
+        return retour;
     }
 }
