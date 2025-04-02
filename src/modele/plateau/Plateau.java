@@ -44,25 +44,41 @@ public class Plateau extends Observable {
 
     public void placerPieces() {
         Roi roiB = new Roi(this);
+        roiB.isWhite = true;
         Reine reineB = new Reine(this);
+        reineB.isWhite = true;
 
         Cavalier cavalierB1 = new Cavalier(this);
+        cavalierB1.isWhite = true;
         Cavalier cavalierB2 = new Cavalier(this);
+        cavalierB2.isWhite = true;
 
         Fou fouB1 = new Fou(this);
+        fouB1.isWhite = true;
         Fou fouB2 = new Fou(this);
+        fouB2.isWhite = true;
 
         Tour tourB1 = new Tour(this);
+        tourB1.isWhite = true;
         Tour tourB2 = new Tour(this);
+        tourB2.isWhite = true;
 
         Pion pionB8 = new Pion(this);
+        pionB8.isWhite = true;
         Pion pionB7 = new Pion(this);
+        pionB7.isWhite = true;
         Pion pionB6 = new Pion(this);
+        pionB6.isWhite = true;
         Pion pionB5 = new Pion(this);
+        pionB5.isWhite = true;
         Pion pionB4 = new Pion(this);
+        pionB4.isWhite = true;
         Pion pionB3 = new Pion(this);
+        pionB3.isWhite = true;
         Pion pionB2 = new Pion(this);
+        pionB2.isWhite = true;
         Pion pionB1 = new Pion(this);
+        pionB1.isWhite = true;
 
         Case cRoiB = grilleCases[4][7];
         Case cReineB = grilleCases[3][7];
@@ -107,28 +123,43 @@ public class Plateau extends Observable {
         pionB8.allerSurCase(cPionB8);
 
         Roi roiN = new Roi(this);
+        roiN.isWhite = false;
         Reine reineN = new Reine(this);
+        reineN.isWhite = false;
 
         Cavalier cavalierN1 = new Cavalier(this);
+        cavalierN1.isWhite = false;
         Cavalier cavalierN2 = new Cavalier(this);
+        cavalierN2.isWhite = false;
 
         Fou fouN1 = new Fou(this);
+        fouN1.isWhite = false;
         Fou fouN2 = new Fou(this);
+        fouN2.isWhite = false;
 
         Tour tourN1 = new Tour(this);
+        tourN1.isWhite = false;
         Tour tourN2 = new Tour(this);
+        tourN2.isWhite = false;
 
         Pion pionN8 = new Pion(this);
+        pionN8.isWhite = false;
         Pion pionN7 = new Pion(this);
+        pionN7.isWhite = false;
         Pion pionN6 = new Pion(this);
+        pionN6.isWhite = false;
         Pion pionN5 = new Pion(this);
+        pionN5.isWhite = false;
         Pion pionN4 = new Pion(this);
+        pionN4.isWhite = false;
         Pion pionN3 = new Pion(this);
+        pionN3.isWhite = false;
         Pion pionN2 = new Pion(this);
+        pionN2.isWhite = false;
         Pion pionN1 = new Pion(this);
+        pionN1.isWhite = false;
 
         Case cRoiN = grilleCases[4][0];
-        cRoiN.p.isWhite = false;
         Case cReineN = grilleCases[3][0];
 
         Case cFouN1 = grilleCases[2][0];
