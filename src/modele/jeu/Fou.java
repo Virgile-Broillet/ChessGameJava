@@ -15,9 +15,14 @@ import java.util.ArrayList;
 
 public class Fou extends Piece
 {
-    public Fou(Plateau _plateau) {
-        super(_plateau);
+    public Fou(Plateau _plateau, boolean _estBlanc) {
+        super(_plateau, _estBlanc);
         decorateurCasesAccessibles = new DecorateurCasesEnLigne(null);
+    }
+
+    @Override
+    public ArrayList<Case> getDeplacementsPossibles() {
+        return null;
     }
 
 

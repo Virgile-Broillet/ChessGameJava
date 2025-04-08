@@ -9,35 +9,38 @@ import modele.jeu.Piece;
 
 public class Case {
 
-    protected Piece p;
-    protected Plateau plateau;
+    private int x, y;
+    private Plateau plateau;
+    private Piece piece;
 
-
-
-    public void quitterLaCase() {
-        p = null;
+    public Case(int x, int y) {
+        this.x = x;
+        this.y = y;
+        this.piece = null;
     }
 
+    public void quitterLaCase() {
+        piece = null;
+    }
 
+    public int getX() {
+        return x;
+    }
 
-    public Case(Plateau _plateau) {
+    public int getY() {
+        return y;
+    }
 
-        plateau = _plateau;
+    public void setPiece(Piece piece) {
+        this.piece = piece;
     }
 
     public Piece getPiece() {
-        return p;
+        return piece;
     }
 
     public boolean estLibre() {
-        return p == null;
+        return piece == null;
     }
-
-    /*
-    public void setEntite(Piece _e) {
-
-        p = _e;
-
-    }*/
 
    }

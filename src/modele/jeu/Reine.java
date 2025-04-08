@@ -15,10 +15,14 @@ import java.util.ArrayList;
 
 public class Reine extends Piece
 {
-    public Reine(Plateau _plateau) {
-        super(_plateau);
+    public Reine(Plateau _plateau, boolean _estBlanc) {
+        super(_plateau, _estBlanc);
         decorateurCasesAccessibles = new DecorateurCasesEnLigne(null);
     }
 
+    @Override
+    public ArrayList<Case> getDeplacementsPossibles() {
+        return null;
+    }
 
 }

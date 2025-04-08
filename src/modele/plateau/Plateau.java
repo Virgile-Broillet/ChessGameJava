@@ -10,8 +10,8 @@ import modele.jeu.*;
 
 import java.awt.Point;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Observable;
-
 
 public class Plateau extends Observable {
 
@@ -30,11 +30,18 @@ public class Plateau extends Observable {
         return grilleCases;
     }
 
+    public Case getCase(int x, int y) {
+        if (x >= 0 && x < 8 && y >= 0 && y < 8) {
+            return grilleCases[x][y];  // Retourne la case correspondante
+        }
+        return null;  // Si les coordonnées sont hors du plateau
+    }
+
     private void initPlateauVide() {
 
         for (int x = 0; x < SIZE_X; x++) {
             for (int y = 0; y < SIZE_Y; y++) {
-                grilleCases[x][y] = new Case(this);
+                grilleCases[x][y] = new Case(x, y);
                 map.put(grilleCases[x][y], new Point(x, y));
             }
 
@@ -43,56 +50,35 @@ public class Plateau extends Observable {
     }
 
     public void placerPieces() {
-        Roi roiB = new Roi(this);
-        roiB.isWhite = true;
-        Reine reineB = new Reine(this);
-        reineB.isWhite = true;
+        Roi roiB = new Roi(this, true);
+        Reine reineB = new Reine(this, true);
 
-        Cavalier cavalierB1 = new Cavalier(this);
-        cavalierB1.isWhite = true;
-        Cavalier cavalierB2 = new Cavalier(this);
-        cavalierB2.isWhite = true;
+        Cavalier cavalierB1 = new Cavalier(this, true);
+        Cavalier cavalierB2 = new Cavalier(this, true);
 
-        Fou fouB1 = new Fou(this);
-        fouB1.isWhite = true;
-        Fou fouB2 = new Fou(this);
-        fouB2.isWhite = true;
+        Fou fouB1 = new Fou(this, true);
+        Fou fouB2 = new Fou(this, true);
 
-        Tour tourB1 = new Tour(this);
-        tourB1.isWhite = true;
-        Tour tourB2 = new Tour(this);
-        tourB2.isWhite = true;
+        Tour tourB1 = new Tour(this, true);
+        Tour tourB2 = new Tour(this, true);
 
-        Pion pionB8 = new Pion(this);
-        pionB8.isWhite = true;
-        Pion pionB7 = new Pion(this);
-        pionB7.isWhite = true;
-        Pion pionB6 = new Pion(this);
-        pionB6.isWhite = true;
-        Pion pionB5 = new Pion(this);
-        pionB5.isWhite = true;
-        Pion pionB4 = new Pion(this);
-        pionB4.isWhite = true;
-        Pion pionB3 = new Pion(this);
-        pionB3.isWhite = true;
-        Pion pionB2 = new Pion(this);
-        pionB2.isWhite = true;
-        Pion pionB1 = new Pion(this);
-        pionB1.isWhite = true;
+        Pion pionB8 = new Pion(this, true);
+        Pion pionB7 = new Pion(this, true);
+        Pion pionB6 = new Pion(this, true);
+        Pion pionB5 = new Pion(this, true);
+        Pion pionB4 = new Pion(this, true);
+        Pion pionB3 = new Pion(this, true);
+        Pion pionB2 = new Pion(this, true);
+        Pion pionB1 = new Pion(this, true);
 
         Case cRoiB = grilleCases[4][7];
-
         Case cReineB = grilleCases[3][7];
-
         Case cFouB1 = grilleCases[2][7];
         Case cFouB2 = grilleCases[5][7];
-
         Case cCavalierB1 = grilleCases[6][7];
         Case cCavalierB2 = grilleCases[1][7];
-
         Case cTourB1 = grilleCases[0][7];
         Case cTourB2 = grilleCases[7][7];
-
         Case cPionB1 = grilleCases[0][6];
         Case cPionB2 = grilleCases[1][6];
         Case cPionB3 = grilleCases[2][6];
@@ -141,42 +127,42 @@ public class Plateau extends Observable {
         pionB7.allerSurCase(cPionB7);
         pionB8.allerSurCase(cPionB8);
 
-        Roi roiN = new Roi(this);
-        roiN.isWhite = false;
-        Reine reineN = new Reine(this);
-        reineN.isWhite = false;
+        Roi roiN = new Roi(this, false);
+        roiN.estBlanc = false;
+        Reine reineN = new Reine(this, false);
+        reineN.estBlanc = false;
 
-        Cavalier cavalierN1 = new Cavalier(this);
-        cavalierN1.isWhite = false;
-        Cavalier cavalierN2 = new Cavalier(this);
-        cavalierN2.isWhite = false;
+        Cavalier cavalierN1 = new Cavalier(this, false);
+        cavalierN1.estBlanc = false;
+        Cavalier cavalierN2 = new Cavalier(this, false);
+        cavalierN2.estBlanc = false;
 
-        Fou fouN1 = new Fou(this);
-        fouN1.isWhite = false;
-        Fou fouN2 = new Fou(this);
-        fouN2.isWhite = false;
+        Fou fouN1 = new Fou(this, false);
+        fouN1.estBlanc = false;
+        Fou fouN2 = new Fou(this, false);
+        fouN2.estBlanc = false;
 
-        Tour tourN1 = new Tour(this);
-        tourN1.isWhite = false;
-        Tour tourN2 = new Tour(this);
-        tourN2.isWhite = false;
+        Tour tourN1 = new Tour(this, false);
+        tourN1.estBlanc = false;
+        Tour tourN2 = new Tour(this, false);
+        tourN2.estBlanc = false;
 
-        Pion pionN8 = new Pion(this);
-        pionN8.isWhite = false;
-        Pion pionN7 = new Pion(this);
-        pionN7.isWhite = false;
-        Pion pionN6 = new Pion(this);
-        pionN6.isWhite = false;
-        Pion pionN5 = new Pion(this);
-        pionN5.isWhite = false;
-        Pion pionN4 = new Pion(this);
-        pionN4.isWhite = false;
-        Pion pionN3 = new Pion(this);
-        pionN3.isWhite = false;
-        Pion pionN2 = new Pion(this);
-        pionN2.isWhite = false;
-        Pion pionN1 = new Pion(this);
-        pionN1.isWhite = false;
+        Pion pionN8 = new Pion(this, false);
+        pionN8.estBlanc = false;
+        Pion pionN7 = new Pion(this, false);
+        pionN7.estBlanc = false;
+        Pion pionN6 = new Pion(this, false);
+        pionN6.estBlanc = false;
+        Pion pionN5 = new Pion(this, false);
+        pionN5.estBlanc = false;
+        Pion pionN4 = new Pion(this, false);
+        pionN4.estBlanc = false;
+        Pion pionN3 = new Pion(this, false);
+        pionN3.estBlanc = false;
+        Pion pionN2 = new Pion(this, false);
+        pionN2.estBlanc = false;
+        Pion pionN1 = new Pion(this, false);
+        pionN1.estBlanc = false;
 
         Case cRoiN = grilleCases[4][0];
         Case cReineN = grilleCases[3][0];
@@ -222,25 +208,85 @@ public class Plateau extends Observable {
 
         setChanged();
         notifyObservers();
-
     }
 
     public void arriverCase(Case c, Piece p) {
 
-        c.p = p;
+        c.setPiece(p);
 
     }
 
-    public void deplacerPiece(Case c1, Case c2) {
-        if (c1.p != null) {
-            c1.p.allerSurCase(c2);
-
+    // Dans Plateau.java
+    public void deplacerPiece(Case depart, Case arrivee) {
+        if (depart == null || arrivee == null) {
+            System.out.println("Case invalide");
+            return;
         }
+
+        Piece piece = depart.getPiece();
+        if (piece == null) {
+            System.out.println("Aucune pièce à déplacer");
+            return;
+        }
+
+        // 2. Vérifier si le mouvement est valide
+
+        List<Case> coupsValides = piece.getDeplacementsPossibles();
+        System.out.println("Coups valides : " + coupsValides);
+        System.out.println("Case d'arrivée : " + arrivee);
+        if (!coupsValides.contains(arrivee)) {
+            System.out.println("Déplacement interdit pour cette pièce");
+            return;
+        }
+
+
+        // 3. Gestion de la capture@Override
+        //    public ArrayList<Case> getDeplacementsPossibles() {
+        if (!arrivee.estLibre()) {
+            Piece pieceAdverse = arrivee.getPiece();
+            if (pieceAdverse.estBlanc() == piece.estBlanc()) {
+                System.out.println("Tu ne peux pas capturer tes propres pièces");
+                return;
+            }
+            // Retirer la pièce adverse du jeu
+            pieceAdverse.quitterCase();
+        }
+
+        // 4. Exécuter le déplacement
+        depart.quitterLaCase();
+        piece.allerSurCase(arrivee);
+
+        // 5. Vérifier l'échec (à implémenter)
+        /*
+        if (estEnEchec(piece.estBlanc())) {
+            // Annuler le coup si le roi est en échec
+            System.out.println("Déplacement impossible : ton roi serait en échec");
+            // [...] Logique pour annuler le coup
+            return;
+        }
+*/
         setChanged();
         notifyObservers();
-
     }
 
+    public boolean estCaseLibre(int x, int y) {
+        Case caseCible = grilleCases[x][y];
+        return caseCible.estLibre();
+    }
+
+    public boolean estCaseOccupeeParAdversaire(int x, int y, Piece piece) {
+        // Vérifie si la case est dans les limites du plateau
+        if (x >= 0 && x < 8 && y >= 0 && y < 8) {
+            Case caseCible = grilleCases[x][y];
+            Piece pieceCible = caseCible.getPiece();
+
+            // Si la case est occupée par une pièce, on vérifie si c'est une pièce adverse
+            if (pieceCible != null) {
+                return pieceCible.estBlanc() != piece.estBlanc();  // Compare les couleurs des pièces
+            }
+        }
+        return false;  // Retourne false si la case est vide ou hors du plateau
+    }
 
     /** Indique si p est contenu dans la grille
      */
@@ -256,6 +302,8 @@ public class Plateau extends Observable {
         }
         return retour;
     }
+
+
 
 
 }
