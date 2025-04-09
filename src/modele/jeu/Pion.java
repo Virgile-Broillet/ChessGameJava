@@ -25,7 +25,7 @@ public class Pion extends Piece {
     public ArrayList<Case> getDeplacementsPossibles() {
         ArrayList<Case> deplacements = new ArrayList<>();
 
-        int direction = (this.estBlanc()) ? -1 : 1; // Les blancs montent, les noirs descendent
+        int direction = (this.estBlanc) ? -1 : 1; // Les blancs montent, les noirs descendent
 
         // Récupérer la case actuelle du pion
         Case positionActuelle = this.getCase();  // Cette méthode existe dans la classe Piece (héritée par Pion)

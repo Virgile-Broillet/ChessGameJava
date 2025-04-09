@@ -24,7 +24,7 @@ public class VueControleur extends JFrame implements Observer {
     private final Jeu jeu;
     private final int sizeX; // taille de la grille affichée
     private final int sizeY;
-    private static final int pxCase = 100; // nombre de pixel par case
+    private static final int pxCase = 75; // nombre de pixel par case
     // icones affichées dans la grille
     private ImageIcon icoRoiBlanc;
     private ImageIcon icoReineBlanc;
@@ -68,7 +68,7 @@ public class VueControleur extends JFrame implements Observer {
 
     private void chargerLesIcones() {
 
-        icoRoiBlanc = chargerIcone("Images/wK.png");
+        icoRoiBlanc = chargerIcone("images/wK.png");
         icoReineBlanc = chargerIcone("images/wQ.png");
         icoCavalierBlanc = chargerIcone("images/wN.png");
         icoFouBlanc = chargerIcone("images/wB.png");

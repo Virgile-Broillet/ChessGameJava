@@ -24,10 +24,6 @@ public abstract class Piece {
         estBlanc = _estBlanc;
     }
 
-    public boolean estBlanc() {
-        return estBlanc;
-    }
-
     public void quitterCase() {
         c.quitterLaCase();
     }

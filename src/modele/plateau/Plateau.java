@@ -244,7 +244,7 @@ public class Plateau extends Observable {
         //    public ArrayList<Case> getDeplacementsPossibles() {
         if (!arrivee.estLibre()) {
             Piece pieceAdverse = arrivee.getPiece();
-            if (pieceAdverse.estBlanc() == piece.estBlanc()) {
+            if (pieceAdverse.estBlanc == piece.estBlanc) {
                 System.out.println("Tu ne peux pas capturer tes propres pièces");
                 return;
             }
@@ -282,7 +282,7 @@ public class Plateau extends Observable {
 
             // Si la case est occupée par une pièce, on vérifie si c'est une pièce adverse
             if (pieceCible != null) {
-                return pieceCible.estBlanc() != piece.estBlanc();  // Compare les couleurs des pièces
+                return pieceCible.estBlanc != piece.estBlanc;  // Compare les couleurs des pièces
             }
         }
         return false;  // Retourne false si la case est vide ou hors du plateau
