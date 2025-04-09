@@ -156,9 +156,9 @@ public class VueControleur extends JFrame implements Observer {
                 jlab.setOpaque(true);
 
                 if ((y%2 == 0 && x%2 == 0) || (y%2 != 0 && x%2 != 0)) {
-                    tabJLabel[x][y].setBackground(new Color(50, 50, 110));
+                    tabJLabel[x][y].setBackground(new Color(112, 102, 119));
                 } else {
-                    tabJLabel[x][y].setBackground(new Color(150, 150, 210));
+                    tabJLabel[x][y].setBackground(new Color(204, 183, 174));
                 }
 
                 grilleJLabels.add(jlab);
