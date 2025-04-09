@@ -40,4 +40,5 @@ public abstract class Piece {
         return c;
     }
 
+    public Plateau getPlateau() {return this.plateau;}
 }

@@ -116,7 +116,6 @@ public class VueControleur extends JFrame implements Observer {
                 final int yy = y;
                 // écouteur de clics
                 jlab.addMouseListener(new MouseAdapter() {
-
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         if (caseClic1 == null) {
@@ -126,15 +125,16 @@ public class VueControleur extends JFrame implements Observer {
                                 DecorateurCasesAccessibles mouvementPiece = null;
 
                                 // Choisir le décorateur en fonction de la pièce
-                                if (caseClic1.getPiece() instanceof Roi) {
-                                    mouvementPiece = new DecorateurCasesEnDiagonale(new DecorateurCasesEnLigne(null)); // Déplacement limité du Roi
+                                /*if (caseClic1.getPiece() instanceof Roi) {
+                                    mouvementPiece = new DecorateurCasesEnDiagonale(new DecorateurCasesEnLigne(new DecorateurCasesEnLigne(), caseClic1.getPiece())); // Déplacement limité du Roi
                                 } else if (caseClic1.getPiece() instanceof Reine) {
-                                    mouvementPiece = new DecorateurCasesEnLigne(new DecorateurCasesEnDiagonale(null)); // Reine = Tour + Fou
+                                    mouvementPiece = new DecorateurCasesEnLigne(new DecorateurCasesEnDiagonale(new DecorateurCasesEnLigne(), caseClic1.getPiece())); // Reine = Tour + Fou
                                 } else if (caseClic1.getPiece() instanceof Fou) {
-                                    mouvementPiece = new DecorateurCasesEnDiagonale(null);
+                                    mouvementPiece = new DecorateurCasesEnDiagonale(new DecorateurCasesEnDiagonale(), caseClic1.getPiece());
                                 } else if (caseClic1.getPiece() instanceof Tour) {
-                                    mouvementPiece = new DecorateurCasesEnLigne(null);
-                                }
+                                    mouvementPiece = new DecorateurCasesEnLigne(new DecorateurCasesEnLigne(), caseClic1.getPiece());
+                                }*/
+
 
                                 // Afficher les cases accessibles si un mouvement est défini
                                 if (mouvementPiece != null) {
@@ -142,7 +142,6 @@ public class VueControleur extends JFrame implements Observer {
                                     System.out.println("Cases accessibles : " + casesPossibles);
                                 }
                             }
-
                         } else {
                             caseClic2 = plateau.getCases()[xx][yy];
                             jeu.envoyerCoup(new Coup(caseClic1, caseClic2));
@@ -150,9 +149,8 @@ public class VueControleur extends JFrame implements Observer {
                             caseClic2 = null;
                         }
                     }
-
-
                 });
+
 
 
                 jlab.setOpaque(true);
@@ -237,7 +235,7 @@ public class VueControleur extends JFrame implements Observer {
                     public void run() {
                         mettreAJourAffichage();
                     }
-                }); 
+                });
         */
 
     }

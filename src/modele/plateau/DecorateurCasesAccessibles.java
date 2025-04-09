@@ -1,29 +1,30 @@
 package modele.plateau;
 
+import modele.jeu.Piece;
 import java.util.ArrayList;
 
 public abstract class DecorateurCasesAccessibles {
 
-    private DecorateurCasesAccessibles baseDecorateur;
+    protected DecorateurCasesAccessibles baseDecorateur;
+    protected Piece piece;
+    protected Plateau plateau;
 
-    public DecorateurCasesAccessibles(DecorateurCasesAccessibles _baseDecorateur) {
-        baseDecorateur = _baseDecorateur;
+    public DecorateurCasesAccessibles(DecorateurCasesAccessibles _baseDecorateur, Piece _piece) {
+        this.baseDecorateur = _baseDecorateur;
+        this.piece = _piece;
+        this.plateau = _piece.getPlateau();
     }
 
     public ArrayList<ArrayList<String>> getCasesPossibles() {
-        ArrayList<ArrayList<String>> retour = new ArrayList<ArrayList<String>>();
+        ArrayList<ArrayList<String>> retour = new ArrayList<>();
 
-        // Si un décorateur de base existe, ajouter ses cases
         if (baseDecorateur != null) {
             retour.addAll(baseDecorateur.getCasesPossibles());
         }
 
-        retour.add(getMesCasesPossibles()); // Ajouter les cases spécifiques à ce décorateur
+        retour.add(getMesCasesPossibles());
         return retour;
     }
 
-
     public abstract ArrayList<String> getMesCasesPossibles();
-
-
 }

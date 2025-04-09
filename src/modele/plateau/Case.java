@@ -43,4 +43,10 @@ public class Case {
         return piece == null;
     }
 
-   }
+    public static String coordVersString(int x, int y) {
+        char colonne = (char) ('A' + x);
+        int ligne = 8 - y;
+        return "" + colonne + ligne;
+    }
+
+}

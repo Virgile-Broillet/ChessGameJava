@@ -303,7 +303,8 @@ public class Plateau extends Observable {
         return retour;
     }
 
-
-
+    public boolean estDansLesLimites(int x, int y) {
+        return x >= 0 && x < SIZE_X && y >= 0 && y < SIZE_Y;
+    }
 
 }
