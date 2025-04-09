@@ -98,72 +98,64 @@ public class VueControleur extends JFrame implements Observer {
     private void placerLesComposantsGraphiques() {
         setTitle("Jeu d'Échecs");
         setResizable(false);
-        setSize(sizeX * pxCase, sizeX * pxCase);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // permet de terminer l'application à la fermeture de la fenêtre
+        setSize(sizeX * pxCase, sizeY * pxCase);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Permet de terminer l'application à la fermeture de la fenêtre
 
-        JComponent grilleJLabels = new JPanel(new GridLayout(sizeY, sizeX)); // grilleJLabels va contenir les cases graphiques et les positionner sous la forme d'une grille
+        JComponent grilleJLabels = new JPanel(new GridLayout(sizeY, sizeX)); // Grille contenant les cases graphiques
 
+        tabJLabel = new JLabel[sizeX][sizeY]; // Initialisation du tableau des JLabel
 
-        tabJLabel = new JLabel[sizeX][sizeY];
-
+        // Boucle pour initialiser toutes les cases du tableau
         for (int y = 0; y < sizeY; y++) {
             for (int x = 0; x < sizeX; x++) {
                 JLabel jlab = new JLabel();
+                tabJLabel[x][y] = jlab; // On conserve la référence de chaque JLabel
 
-                tabJLabel[x][y] = jlab; // on conserve les cases graphiques dans tabJLabel pour avoir un accès pratique à celles-ci (voir mettreAJourAffichage() )
+                final int xx = x; // Permet de capturer les variables x et y dans la classe anonyme
+                final int yy = y; // Permet de capturer les variables x et y dans la classe anonyme
 
-                final int xx = x; // permet de compiler la classe anonyme ci-dessous
-                final int yy = y;
-                // écouteur de clics
+                // Ajout d'un écouteur de clics sur chaque case
                 jlab.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
+                        // Gérer le clic sur la case
                         if (caseClic1 == null) {
-                            caseClic1 = plateau.getCases()[xx][yy];
+                            caseClic1 = plateau.getCases()[xx][yy]; // Première case cliquée
 
                             if (caseClic1.getPiece() != null) {
-                                DecorateurCasesAccessibles mouvementPiece = null;
+                                // Calcul des cases possibles pour la pièce cliquée (ex. : Roi)
+                                ArrayList<Case> casesPossibles = calculerCasesPossibles(caseClic1);
 
-                                // Choisir le décorateur en fonction de la pièce
-                                /*if (caseClic1.getPiece() instanceof Roi) {
-                                    mouvementPiece = new DecorateurCasesEnDiagonale(new DecorateurCasesEnLigne(new DecorateurCasesEnLigne(), caseClic1.getPiece())); // Déplacement limité du Roi
-                                } else if (caseClic1.getPiece() instanceof Reine) {
-                                    mouvementPiece = new DecorateurCasesEnLigne(new DecorateurCasesEnDiagonale(new DecorateurCasesEnLigne(), caseClic1.getPiece())); // Reine = Tour + Fou
-                                } else if (caseClic1.getPiece() instanceof Fou) {
-                                    mouvementPiece = new DecorateurCasesEnDiagonale(new DecorateurCasesEnDiagonale(), caseClic1.getPiece());
-                                } else if (caseClic1.getPiece() instanceof Tour) {
-                                    mouvementPiece = new DecorateurCasesEnLigne(new DecorateurCasesEnLigne(), caseClic1.getPiece());
-                                }*/
-
-
-                                // Afficher les cases accessibles si un mouvement est défini
-                                if (mouvementPiece != null) {
-                                    ArrayList<ArrayList<String>> casesPossibles = mouvementPiece.getCasesPossibles();
-                                    System.out.println("Cases accessibles : " + casesPossibles);
-                                }
+                                // Surbriller les cases accessibles
+                                surlignerCasesPossibles(casesPossibles);
                             }
                         } else {
-                            caseClic2 = plateau.getCases()[xx][yy];
-                            jeu.envoyerCoup(new Coup(caseClic1, caseClic2));
+                            caseClic2 = plateau.getCases()[xx][yy]; // Deuxième case cliquée
+                            jeu.envoyerCoup(new Coup(caseClic1, caseClic2)); // Effectuer le coup
+
+                            // Réinitialiser les couleurs après le coup
+                            resetCouleursCases();
                             caseClic1 = null;
                             caseClic2 = null;
                         }
                     }
                 });
 
-
-
                 jlab.setOpaque(true);
 
-                if ((y%2 == 0 && x%2 == 0) || (y%2 != 0 && x%2 != 0)) {
-                    tabJLabel[x][y].setBackground(new Color(112, 102, 119));
+                // Initialisation des couleurs de fond des cases (alternance claire et sombre)
+                if ((y % 2 == 0 && x % 2 == 0) || (y % 2 != 0 && x % 2 != 0)) {
+                    tabJLabel[x][y].setBackground(new Color(112, 102, 119)); // Case sombre
                 } else {
-                    tabJLabel[x][y].setBackground(new Color(204, 183, 174));
+                    tabJLabel[x][y].setBackground(new Color(204, 183, 174)); // Case claire
                 }
 
+                // Ajouter chaque case à la grille
                 grilleJLabels.add(jlab);
             }
         }
+
+        // Ajouter la grille au JPanel
         add(grilleJLabels);
     }
 
@@ -220,6 +212,75 @@ public class VueControleur extends JFrame implements Observer {
             }
         }
     }
+
+    // Fonction qui surligne les cases accessibles en changeant leur couleur
+    private void surlignerCasesPossibles(ArrayList<Case> casesPossibles) {
+        // D'abord, réinitialiser la couleur des cases (retourner au damier initial)
+        resetCouleursCases();
+
+        // Ensuite, surligner les cases accessibles avec une couleur spécifique
+        for (Case c : casesPossibles) {
+            int x = c.getX();
+            int y = c.getY();
+            tabJLabel[x][y].setBackground(new Color(189, 144, 92)); // Change la couleur de fond pour surligner
+        }
+    }
+
+    // Fonction pour réinitialiser les couleurs des cases du plateau (damier classique)
+    private void resetCouleursCases() {
+        // Parcourir chaque case du plateau
+        for (int x = 0; x < sizeX; x++) {
+            for (int y = 0; y < sizeY; y++) {
+                // Alterner les couleurs des cases pour créer le damier (clair et sombre)
+                if ((x + y) % 2 == 0) {
+                    tabJLabel[x][y].setBackground(new Color(112, 102, 119)); // Case sombre
+                } else {
+                    tabJLabel[x][y].setBackground(new Color(204, 183, 174)); // Case claire
+                }
+            }
+        }
+    }
+
+    // Exemple de calcul des cases accessibles pour chaque pièce
+    private ArrayList<Case> calculerCasesPossibles(Case caseClic1) {
+        ArrayList<Case> casesPossibles = new ArrayList<>();
+        Piece piece = caseClic1.getPiece();
+
+        int x = caseClic1.getX();
+        int y = caseClic1.getY();
+
+        // Si la pièce est un Roi
+        if (piece instanceof Roi) {
+            casesPossibles = ((Roi) piece).getDeplacementsPossibles();
+        }
+
+        // Si la pièce est une Reine
+        else if (piece instanceof Reine) {
+            casesPossibles = (ArrayList<Case>) ((Reine) piece).getDeplacementsPossibles();
+        }
+
+        // Si la pièce est un Cavalier
+        else if (piece instanceof Cavalier) {
+            casesPossibles = ((Cavalier) piece).getDeplacementsPossibles();
+        }
+
+        // Si la pièce est un Fou
+        else if (piece instanceof Fou) {
+            casesPossibles = (ArrayList<Case>) ((Fou) piece).getDeplacementsPossibles();
+        }
+
+        // Si la pièce est une Tour
+        else if (piece instanceof Tour) {
+            casesPossibles = ((Tour) piece).getDeplacementsPossibles();
+        }
+
+        if (piece instanceof Pion) {
+            casesPossibles = ((Pion) piece).getDeplacementsPossibles();
+        }
+
+        return casesPossibles;
+    }
+
 
     @Override
     public void update(Observable o, Object arg) {

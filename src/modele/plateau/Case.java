@@ -7,6 +7,9 @@ package modele.plateau;
 
 import modele.jeu.Piece;
 
+import java.awt.*;
+import java.util.ArrayList;
+
 public class Case {
 
     private int x, y;
@@ -42,6 +45,8 @@ public class Case {
     public boolean estLibre() {
         return piece == null;
     }
+
+    public Case getCase() { return this; }
 
     public static String coordVersString(int x, int y) {
         char colonne = (char) ('A' + x);

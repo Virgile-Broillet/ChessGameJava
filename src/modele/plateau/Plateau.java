@@ -5,10 +5,10 @@
  */
 package modele.plateau;
 
-
 import modele.jeu.*;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
@@ -128,41 +128,25 @@ public class Plateau extends Observable {
         pionB8.allerSurCase(cPionB8);
 
         Roi roiN = new Roi(this, false);
-        roiN.estBlanc = false;
         Reine reineN = new Reine(this, false);
-        reineN.estBlanc = false;
 
         Cavalier cavalierN1 = new Cavalier(this, false);
-        cavalierN1.estBlanc = false;
         Cavalier cavalierN2 = new Cavalier(this, false);
-        cavalierN2.estBlanc = false;
 
         Fou fouN1 = new Fou(this, false);
-        fouN1.estBlanc = false;
         Fou fouN2 = new Fou(this, false);
-        fouN2.estBlanc = false;
 
         Tour tourN1 = new Tour(this, false);
-        tourN1.estBlanc = false;
         Tour tourN2 = new Tour(this, false);
-        tourN2.estBlanc = false;
 
         Pion pionN8 = new Pion(this, false);
-        pionN8.estBlanc = false;
         Pion pionN7 = new Pion(this, false);
-        pionN7.estBlanc = false;
         Pion pionN6 = new Pion(this, false);
-        pionN6.estBlanc = false;
         Pion pionN5 = new Pion(this, false);
-        pionN5.estBlanc = false;
         Pion pionN4 = new Pion(this, false);
-        pionN4.estBlanc = false;
         Pion pionN3 = new Pion(this, false);
-        pionN3.estBlanc = false;
         Pion pionN2 = new Pion(this, false);
-        pionN2.estBlanc = false;
         Pion pionN1 = new Pion(this, false);
-        pionN1.estBlanc = false;
 
         Case cRoiN = grilleCases[4][0];
         Case cReineN = grilleCases[3][0];
@@ -229,45 +213,48 @@ public class Plateau extends Observable {
             return;
         }
 
-        // 2. Vérifier si le mouvement est valide
+        // 1. Vérifier si le déplacement est valide
+        ArrayList<Case> coupsValides = (ArrayList<Case>) piece.getDeplacementsPossibles();
+        for (Case coup : coupsValides) {
 
-        List<Case> coupsValides = piece.getDeplacementsPossibles();
+        }
         System.out.println("Coups valides : " + coupsValides);
         System.out.println("Case d'arrivée : " + arrivee);
+
+
         if (!coupsValides.contains(arrivee)) {
             System.out.println("Déplacement interdit pour cette pièce");
             return;
         }
 
-
-        // 3. Gestion de la capture@Override
-        //    public ArrayList<Case> getDeplacementsPossibles() {
+        // 2. Vérification des autres conditions du déplacement (ex : capture)
         if (!arrivee.estLibre()) {
             Piece pieceAdverse = arrivee.getPiece();
             if (pieceAdverse.estBlanc == piece.estBlanc) {
                 System.out.println("Tu ne peux pas capturer tes propres pièces");
                 return;
             }
-            // Retirer la pièce adverse du jeu
+            // Retirer la pièce adverse
             pieceAdverse.quitterCase();
         }
 
-        // 4. Exécuter le déplacement
+        // 3. Exécution du déplacement
         depart.quitterLaCase();
         piece.allerSurCase(arrivee);
 
-        // 5. Vérifier l'échec (à implémenter)
-        /*
-        if (estEnEchec(piece.estBlanc())) {
-            // Annuler le coup si le roi est en échec
-            System.out.println("Déplacement impossible : ton roi serait en échec");
-            // [...] Logique pour annuler le coup
-            return;
-        }
-*/
+        // 4. Vérifier l'échec (à implémenter)
+    /*
+    if (estEnEchec(piece.estBlanc())) {
+        System.out.println("Déplacement impossible : le roi serait en échec");
+        return;
+    }
+    */
+
         setChanged();
         notifyObservers();
+
     }
+
 
     public boolean estCaseLibre(int x, int y) {
         Case caseCible = grilleCases[x][y];
@@ -302,6 +289,24 @@ public class Plateau extends Observable {
         }
         return retour;
     }
+
+    public ArrayList<Piece> getPiecesAdverses(Piece piece) {
+        ArrayList<Piece> piecesAdverses = new ArrayList<>();
+
+        boolean estBlanc = piece.estBlanc; // Récupère la couleur de la pièce
+
+        for (int x = 0; x < SIZE_X; x++) {
+            for (int y = 0; y < SIZE_Y; y++) {
+                Case c = grilleCases[x][y]; // Récupère la case
+                if (c.getPiece() != null && c.getPiece().estBlanc != estBlanc) { // Vérifie si la pièce est adverse
+                    piecesAdverses.add(c.getPiece());
+                }
+            }
+        }
+        return piecesAdverses;
+    }
+
+
 
     public boolean estDansLesLimites(int x, int y) {
         return x >= 0 && x < SIZE_X && y >= 0 && y < SIZE_Y;

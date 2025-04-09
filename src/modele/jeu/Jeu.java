@@ -1,27 +1,22 @@
 package modele.jeu;
-
-import modele.plateau.Case;
 import modele.plateau.Plateau;
 
-import javax.print.event.PrintJobEvent;
 
-public class Jeu extends Thread{
+public class Jeu extends Thread {
     private Plateau plateau;
     private Joueur j1;
     private Joueur j2;
     protected Coup coupRecu;
 
-    private Roi roi;
-
     public Jeu() {
         plateau = new Plateau();
         plateau.placerPieces();
 
-        j1 = new Joueur(this);
-        j2 = new Joueur(this);
+        // Initialisation des joueurs
+        j1 = new Joueur(this, true);  // Joueur 1 est blanc
+        j2 = new Joueur(this, false); // Joueur 2 est noir
 
         start();
-
     }
 
     public Plateau getPlateau() {
@@ -29,10 +24,8 @@ public class Jeu extends Thread{
     }
 
     public void placerPieces() {
-
         plateau.placerPieces();
     }
-
 
     public void envoyerCoup(Coup c) {
         coupRecu = c;
@@ -40,9 +33,7 @@ public class Jeu extends Thread{
         synchronized (this) {
             notify();
         }
-        System.out.println("hello");
     }
-
 
     public void appliquerCoup(Coup coup) {
         plateau.deplacerPiece(coup.dep, coup.arr);
@@ -53,13 +44,48 @@ public class Jeu extends Thread{
     }
 
     public void jouerPartie() {
+        // Le jeu s'exécute en boucle
+        while (true) {
+            // Vérifie si c'est le tour du joueur blanc ou noir et applique son coup
+            if (j1.estBlanc()) {
 
-        while(true) {
-            Coup c = j1.getCoup();
-            appliquerCoup(c);
+                System.out.println("Tour du joueur blanc");
+
+                Coup c = j1.getCoup();
+                appliquerCoup(c);
+
+                synchronized (this) {
+                    notify();  // Notifie le joueur noir qu'il peut jouer
+                }
+
+                // Attente que le joueur noir fasse son coup
+                synchronized (this) {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else {
+
+                System.out.println("Tour du joueur noir");
+
+                Coup c = j2.getCoup();
+                appliquerCoup(c);
+
+                synchronized (this) {
+                    notify();  // Notifie le joueur blanc qu'il peut jouer
+                }
+
+                // Attente que le joueur blanc fasse son coup
+                synchronized (this) {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
-
     }
-
-
 }
