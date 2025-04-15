@@ -49,6 +49,47 @@ public class Plateau extends Observable {
 
     }
 
+    public Roi trouverRoi(boolean estBlanc) {
+        // Parcourir toutes les cases du plateau
+        for (int x = 0; x < Plateau.SIZE_X; x++) {
+            for (int y = 0; y < Plateau.SIZE_Y; y++) {
+                Case c = grilleCases[x][y];  // Récupérer chaque case
+                Piece piece = c.getPiece();   // Récupérer la pièce sur cette case
+
+                // Vérifier si la pièce est un roi et si sa couleur correspond à celle recherchée
+                if (piece instanceof Roi && piece.estBlanc == estBlanc) {
+                    return (Roi) piece;  // Retourner le roi trouvé
+                }
+            }
+        }
+        return null;  // Retourner null si le roi n'a pas été trouvé (ce qui ne devrait jamais arriver)
+    }
+
+
+    public boolean estEnEchec(boolean estBlanc) {
+        // Trouver le roi du joueur
+        Roi roi = trouverRoi(estBlanc);
+        if (roi == null) return false;  // Si le roi n'existe pas (ce qui est impossible en règle générale)
+
+        // Vérifier si une pièce adverse menace le roi
+        for (int x = 0; x < Plateau.SIZE_X; x++) {
+            for (int y = 0; y < Plateau.SIZE_Y; y++) {
+                Case c = grilleCases[x][y];
+                Piece piece = c.getPiece();
+
+                // Si la case contient une pièce ennemie, vérifier si cette pièce peut attaquer le roi
+                if (piece != null && piece.estBlanc != estBlanc) {
+                    ArrayList<Case> coupsValides = (ArrayList<Case>) piece.getDeplacementsPossibles();
+                    if (coupsValides.contains(roi.getCase())) {
+                        return true;  // Si le roi est une cible pour cette pièce, il est en échec
+                    }
+                }
+            }
+        }
+
+        return false;  // Le roi n'est pas en échec
+    }
+
     public void placerPieces() {
         Roi roiB = new Roi(this, true);
         Reine reineB = new Reine(this, true);
@@ -200,8 +241,6 @@ public class Plateau extends Observable {
 
     }
 
-
-
     // Dans Plateau.java
     public void deplacerPiece(Case depart, Case arrivee) {
         if (depart == null || arrivee == null) {
@@ -217,9 +256,7 @@ public class Plateau extends Observable {
 
         // 1. Vérifier si le déplacement est valide
         ArrayList<Case> coupsValides = (ArrayList<Case>) piece.getDeplacementsPossibles();
-        for (Case coup : coupsValides) {
 
-        }
         System.out.println("Coups valides : " + coupsValides);
         System.out.println("Case d'arrivée : " + arrivee);
 
@@ -240,17 +277,21 @@ public class Plateau extends Observable {
             pieceAdverse.quitterLaCase();
         }
 
+        if (piece instanceof Pion) {
+            Pion pion = (Pion) piece;
+            pion.premierDeplacement = false; // Définir premierDeplacement à false après le premier coup
+        }
+
         // 3. Exécution du déplacement
         depart.quitterLaCase();
         piece.allerSurCase(arrivee);
 
         // 4. Vérifier l'échec (à implémenter)
-    /*
-    if (estEnEchec(piece.estBlanc())) {
-        System.out.println("Déplacement impossible : le roi serait en échec");
-        return;
-    }
-    */
+        if (estEnEchec(piece.estBlanc)) {
+            System.out.println("Déplacement impossible : le roi serait en échec");
+            depart.setPiece(piece);
+            arrivee.quitterLaCase();
+        }
 
         setChanged();
         notifyObservers();
@@ -307,7 +348,6 @@ public class Plateau extends Observable {
         }
         return piecesAdverses;
     }
-
 
 
 

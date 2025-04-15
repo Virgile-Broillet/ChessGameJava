@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Pion extends Piece {
 
-    private boolean premierDeplacement = true; // Permet de vérifier si le pion est au premier coup
+    public boolean premierDeplacement = true; // Permet de vérifier si le pion est au premier coup
 
     public Pion(Plateau _plateau, boolean _estBlanc) {
         super(_plateau, _estBlanc);
@@ -38,12 +38,9 @@ public class Pion extends Piece {
             deplacements.add(plateau.getCase(x, (y + direction)));
         }
 
-        // Avancer de deux cases si c'est le premier déplacement
+        // Avancer de deux cases si c'est le premier déplacement et les cases sont libres
         if (premierDeplacement && plateau.estCaseLibre(x, (y + direction)) && plateau.estCaseLibre(x, (y + 2 * direction))) {
-            // Vérifier qu'il n'y a pas de pièce bloquante sur la case intermédiaire
-            if (plateau.estCaseLibre(x, (y + direction))) {
-                deplacements.add(plateau.getCase(x, (y + 2 * direction)));  // Ajouter la case à 2 cases si la case intermédiaire est libre
-            }
+            deplacements.add(plateau.getCase(x, (y + 2 * direction)));  // Ajouter la case à 2 cases si les deux cases sont libres
         }
 
         // Capturer en diagonale (vérifier si une pièce adverse est présente)
@@ -60,6 +57,6 @@ public class Pion extends Piece {
     // Méthode pour déplacer le pion et mettre à jour l'état de son premier déplacement
     public void deplacer(Case destination) {
         super.allerSurCase(destination);
-        premierDeplacement = false; // Après le premier mouvement, on ne peut plus avancer de deux cases
+        premierDeplacement = false; // Désactive le premier déplacement une fois qu'il a été effectué
     }
 }

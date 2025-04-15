@@ -48,17 +48,25 @@ public class Jeu extends Thread {
         while (true) {
             Coup c;
             if (tourBlanc) {
-                c = j1.getCoup();
-                if (c.getDepart().getPiece().estBlanc) {
-                    appliquerCoup(c);
+                c = j1.getCoup(); // Le joueur blanc joue
+                if (c.getDepart().getPiece().estBlanc) { // Vérifie que la pièce du joueur blanc est bien sélectionnée
+                    appliquerCoup(c);  // Applique le coup (déplacement)
+                    // Si le coup a été effectué, on met à jour le premier déplacement du pion
+                    if (c.getDepart().getPiece() instanceof Pion) {
+                        ((Pion) c.getDepart().getPiece()).premierDeplacement = false;
+                    }
                     tourBlanc = false;
                 } else {
                     System.out.println("Ce n'est pas aux noirs de jouer !");
                 }
             } else {
-                c = j2.getCoup();
-                if (!c.getDepart().getPiece().estBlanc) {
-                    appliquerCoup(c);
+                c = j2.getCoup(); // Le joueur noir joue
+                if (!c.getDepart().getPiece().estBlanc) { // Vérifie que la pièce du joueur noir est bien sélectionnée
+                    appliquerCoup(c);  // Applique le coup (déplacement)
+                    // Si le coup a été effectué, on met à jour le premier déplacement du pion
+                    if (c.getDepart().getPiece() instanceof Pion) {
+                        ((Pion) c.getDepart().getPiece()).premierDeplacement = false;
+                    }
                     tourBlanc = true;
                 } else {
                     System.out.println("Ce n'est pas aux blancs de jouer !");
@@ -66,6 +74,5 @@ public class Jeu extends Thread {
             }
         }
     }
-
 
 }
