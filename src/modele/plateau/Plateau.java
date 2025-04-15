@@ -200,6 +200,8 @@ public class Plateau extends Observable {
 
     }
 
+
+
     // Dans Plateau.java
     public void deplacerPiece(Case depart, Case arrivee) {
         if (depart == null || arrivee == null) {
@@ -235,7 +237,7 @@ public class Plateau extends Observable {
                 return;
             }
             // Retirer la pièce adverse
-            pieceAdverse.quitterCase();
+            pieceAdverse.quitterLaCase();
         }
 
         // 3. Exécution du déplacement
@@ -305,6 +307,7 @@ public class Plateau extends Observable {
         }
         return piecesAdverses;
     }
+
 
 
 

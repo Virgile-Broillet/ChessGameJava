@@ -7,6 +7,7 @@ public class Jeu extends Thread {
     private Joueur j1;
     private Joueur j2;
     protected Coup coupRecu;
+    private boolean tourBlanc = true;
 
     public Jeu() {
         plateau = new Plateau();
@@ -44,48 +45,27 @@ public class Jeu extends Thread {
     }
 
     public void jouerPartie() {
-        // Le jeu s'exécute en boucle
         while (true) {
-            // Vérifie si c'est le tour du joueur blanc ou noir et applique son coup
-            if (j1.estBlanc()) {
-
-                System.out.println("Tour du joueur blanc");
-
-                Coup c = j1.getCoup();
-                appliquerCoup(c);
-
-                synchronized (this) {
-                    notify();  // Notifie le joueur noir qu'il peut jouer
-                }
-
-                // Attente que le joueur noir fasse son coup
-                synchronized (this) {
-                    try {
-                        wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+            Coup c;
+            if (tourBlanc) {
+                c = j1.getCoup();
+                if (c.getDepart().getPiece().estBlanc) {
+                    appliquerCoup(c);
+                    tourBlanc = false;
+                } else {
+                    System.out.println("Ce n'est pas aux noirs de jouer !");
                 }
             } else {
-
-                System.out.println("Tour du joueur noir");
-
-                Coup c = j2.getCoup();
-                appliquerCoup(c);
-
-                synchronized (this) {
-                    notify();  // Notifie le joueur blanc qu'il peut jouer
-                }
-
-                // Attente que le joueur blanc fasse son coup
-                synchronized (this) {
-                    try {
-                        wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                c = j2.getCoup();
+                if (!c.getDepart().getPiece().estBlanc) {
+                    appliquerCoup(c);
+                    tourBlanc = true;
+                } else {
+                    System.out.println("Ce n'est pas aux blancs de jouer !");
                 }
             }
         }
     }
+
+
 }

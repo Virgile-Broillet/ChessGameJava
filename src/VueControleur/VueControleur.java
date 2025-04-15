@@ -25,6 +25,7 @@ public class VueControleur extends JFrame implements Observer {
     private final int sizeX; // taille de la grille affichée
     private final int sizeY;
     private static final int pxCase = 75; // nombre de pixel par case
+    private boolean estTourBlanc = true;
     // icones affichées dans la grille
     private ImageIcon icoRoiBlanc;
     private ImageIcon icoReineBlanc;
@@ -118,22 +119,28 @@ public class VueControleur extends JFrame implements Observer {
                 jlab.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        // Gérer le clic sur la case
                         if (caseClic1 == null) {
                             caseClic1 = plateau.getCases()[xx][yy]; // Première case cliquée
 
                             if (caseClic1.getPiece() != null) {
-                                // Calcul des cases possibles pour la pièce cliquée (ex. : Roi)
-                                ArrayList<Case> casesPossibles = calculerCasesPossibles(caseClic1);
+                                Piece piece = caseClic1.getPiece();
 
-                                // Surbriller les cases accessibles
-                                surlignerCasesPossibles(casesPossibles);
+                                // Vérifie si c'est le bon joueur qui joue
+                                if ((estTourBlanc && piece.estBlanc) || (!estTourBlanc && !piece.estBlanc)) {
+                                    ArrayList<Case> casesPossibles = calculerCasesPossibles(caseClic1);
+                                    surlignerCasesPossibles(casesPossibles);
+                                } else {
+                                    // Mauvais tour, on annule la sélection
+                                    caseClic1 = null;
+                                }
                             }
                         } else {
                             caseClic2 = plateau.getCases()[xx][yy]; // Deuxième case cliquée
                             jeu.envoyerCoup(new Coup(caseClic1, caseClic2)); // Effectuer le coup
 
-                            // Réinitialiser les couleurs après le coup
+                            estTourBlanc = !estTourBlanc; // Changement de tour
+
+                            // Réinitialisation
                             resetCouleursCases();
                             caseClic1 = null;
                             caseClic2 = null;

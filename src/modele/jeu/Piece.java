@@ -24,16 +24,16 @@ public abstract class Piece {
         estBlanc = _estBlanc;
     }
 
-    public void quitterCase() {
-        c.quitterLaCase();
+    public void quitterLaCase() {
+        // Vide la case où la pièce se trouve actuellement
+        this.c.setPiece(null); // On enlève la référence de la pièce sur cette case
+        this.c = null; // La pièce ne sait plus où elle est
     }
 
     public void allerSurCase(Case _c) {
-        if (c != null) {
-            quitterCase();
-        }
-        c = _c;
-        plateau.arriverCase(c, this);
+        // Déplace la pièce vers la nouvelle case
+        this.c = _c;
+        _c.setPiece(this);  // La nouvelle case contient désormais cette pièce
     }
 
     public Case getCase() {
