@@ -24,6 +24,10 @@ public abstract class Piece {
         estBlanc = _estBlanc;
     }
 
+    public boolean estBlanc() {
+        return this.estBlanc;
+    }
+
     public void quitterLaCase() {
         // Vide la case où la pièce se trouve actuellement
         this.c.setPiece(null); // On enlève la référence de la pièce sur cette case
