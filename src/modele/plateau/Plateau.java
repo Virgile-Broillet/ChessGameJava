@@ -349,6 +349,26 @@ public class Plateau extends Observable {
         return piecesAdverses;
     }
 
+    public boolean estCaseMenacee(Case caseCible, boolean parBlanc) {
+        for (int x = 0; x < SIZE_X; x++) {
+            for (int y = 0; y < SIZE_Y; y++) {
+                Case c = grilleCases[x][y];
+                Piece p = c.getPiece();
+                if (p != null && p.estBlanc != parBlanc) {
+                    if (p instanceof Roi) continue;
+
+                    ArrayList<Case> attaques = (ArrayList<Case>) p.getDeplacementsPossibles();
+                    if (attaques.contains(caseCible)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
+
 
 
     public boolean estDansLesLimites(int x, int y) {

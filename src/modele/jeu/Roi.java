@@ -21,7 +21,7 @@ public class Roi extends Piece {
         int x = positionActuelle.getX();
         int y = positionActuelle.getY();
 
-        // Définir les directions de mouvement du roi (8 directions autour de lui)
+        // 8 directions autour du roi
         int[][] directions = {
                 {-1, -1}, {-1, 0}, {-1, 1},
                 { 0, -1},          { 0, 1},
@@ -32,14 +32,14 @@ public class Roi extends Piece {
             int newX = x + dir[0];
             int newY = y + dir[1];
 
-            // Vérifier si la case est à l'intérieur des limites du plateau
             if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8) {
                 Case caseCible = plateau.getCase(newX, newY);
 
-                // Si la case est libre ou occupée par une pièce adverse
+                // Vérifie que la case est libre ou occupée par un adversaire
                 if (caseCible.estLibre() || plateau.estCaseOccupeeParAdversaire(newX, newY, this)) {
-                    // Vérifier que déplacer le roi sur cette case ne le met pas en échec
-                    if (!deplacementMetEnEchec(caseCible)) {
+
+                    // Vérifie que le roi ne va pas sur une case attaquée
+                    if (!plateau.estCaseMenacee(caseCible, estBlanc)) {
                         deplacements.add(caseCible);
                     }
                 }
@@ -48,6 +48,7 @@ public class Roi extends Piece {
 
         return deplacements;
     }
+
 
 
     /**
@@ -89,6 +90,7 @@ public class Roi extends Piece {
 
         return false; // Le Roi n'est pas en échec
     }
+
 
     @Override
     public String toString() {
