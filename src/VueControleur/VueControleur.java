@@ -1,6 +1,7 @@
 package VueControleur;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -12,6 +13,9 @@ import javax.swing.*;
 
 import modele.jeu.*;
 import modele.plateau.*;
+
+import java.awt.event.ActionListener;
+import javax.swing.Timer;
 
 
 /** Cette classe a deux fonctions :
@@ -46,6 +50,18 @@ public class VueControleur extends JFrame implements Observer {
     private Case caseClic2;
 
 
+    private JLabel timerBlancLabel;
+    private JLabel timerNoirLabel;
+    private int tempsBlanc = 0;
+    private int tempsNoir = 0;
+    private Timer timer;
+    private boolean tourBlanc = true;
+    private JLabel timerLabel;
+
+    private JPanel piecesBlancCapturées;
+    private JPanel piecesNoirCapturées;
+
+
     private JLabel[][] tabJLabel; // cases graphique (au moment du rafraichissement, chaque case va être associée à une icône, suivant ce qui est présent dans le modèle)
 
 
@@ -64,6 +80,19 @@ public class VueControleur extends JFrame implements Observer {
 
         mettreAJourAffichage();
 
+        timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (estTourBlanc) {
+                    tempsBlanc++;
+                    timerBlancLabel.setText("Blanc: " + tempsBlanc + "s");
+                } else {
+                    tempsNoir++;
+                    timerNoirLabel.setText("Noir: " + tempsNoir + "s");
+                }
+            }
+        });
+        timer.start();
     }
 
 
@@ -96,51 +125,45 @@ public class VueControleur extends JFrame implements Observer {
         return resizedIcon;
     }
 
+
     private void placerLesComposantsGraphiques() {
         setTitle("Jeu d'Échecs");
         setResizable(false);
-        setSize(sizeX * pxCase, sizeY * pxCase);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Permet de terminer l'application à la fermeture de la fenêtre
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JComponent grilleJLabels = new JPanel(new GridLayout(sizeY, sizeX)); // Grille contenant les cases graphiques
+        // Grille centrale
+        JPanel grilleJLabels = new JPanel(new GridLayout(sizeY, sizeX));
+        tabJLabel = new JLabel[sizeX][sizeY];
 
-        tabJLabel = new JLabel[sizeX][sizeY]; // Initialisation du tableau des JLabel
-
-        // Boucle pour initialiser toutes les cases du tableau
         for (int y = 0; y < sizeY; y++) {
             for (int x = 0; x < sizeX; x++) {
                 JLabel jlab = new JLabel();
-                tabJLabel[x][y] = jlab; // On conserve la référence de chaque JLabel
+                jlab.setOpaque(true);
+                jlab.setHorizontalAlignment(JLabel.CENTER);
+                jlab.setVerticalAlignment(JLabel.CENTER);
+                jlab.setPreferredSize(new Dimension(pxCase, pxCase));
 
-                final int xx = x; // Permet de capturer les variables x et y dans la classe anonyme
-                final int yy = y; // Permet de capturer les variables x et y dans la classe anonyme
+                final int xx = x;
+                final int yy = y;
 
-                // Ajout d'un écouteur de clics sur chaque case
                 jlab.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         if (caseClic1 == null) {
-                            caseClic1 = plateau.getCases()[xx][yy]; // Première case cliquée
-
+                            caseClic1 = plateau.getCases()[xx][yy];
                             if (caseClic1.getPiece() != null) {
                                 Piece piece = caseClic1.getPiece();
-
-                                // Vérifie si c'est le bon joueur qui joue
                                 if ((estTourBlanc && piece.estBlanc) || (!estTourBlanc && !piece.estBlanc)) {
                                     ArrayList<Case> casesPossibles = calculerCasesPossibles(caseClic1);
                                     surlignerCasesPossibles(casesPossibles);
                                 } else {
-                                    // Mauvais tour, on annule la sélection
                                     caseClic1 = null;
                                 }
                             }
                         } else {
-                            caseClic2 = plateau.getCases()[xx][yy]; // Deuxième case cliquée
-                            jeu.envoyerCoup(new Coup(caseClic1, caseClic2)); // Effectuer le coup
-
-                            estTourBlanc = !estTourBlanc; // Changement de tour
-
-                            // Réinitialisation
+                            caseClic2 = plateau.getCases()[xx][yy];
+                            jeu.envoyerCoup(new Coup(caseClic1, caseClic2));
+                            estTourBlanc = !estTourBlanc;
                             resetCouleursCases();
                             caseClic1 = null;
                             caseClic2 = null;
@@ -148,22 +171,80 @@ public class VueControleur extends JFrame implements Observer {
                     }
                 });
 
-                jlab.setOpaque(true);
-
-                // Initialisation des couleurs de fond des cases (alternance claire et sombre)
-                if ((y % 2 == 0 && x % 2 == 0) || (y % 2 != 0 && x % 2 != 0)) {
-                    tabJLabel[x][y].setBackground(new Color(112, 102, 119)); // Case sombre
+                if ((x + y) % 2 == 0) {
+                    jlab.setBackground(new Color(112, 102, 119));
                 } else {
-                    tabJLabel[x][y].setBackground(new Color(204, 183, 174)); // Case claire
+                    jlab.setBackground(new Color(204, 183, 174));
                 }
 
-                // Ajouter chaque case à la grille
+                tabJLabel[x][y] = jlab;
                 grilleJLabels.add(jlab);
             }
         }
 
-        // Ajouter la grille au JPanel
-        add(grilleJLabels);
+        // Coordonnées autour de la grille
+        JPanel coordGauche = new JPanel(new GridLayout(sizeY, 1));
+        for (int y = sizeY - 1; y >= 0; y--) {
+            coordGauche.add(new JLabel("" + (y + 1), JLabel.CENTER));
+        }
+
+        JPanel coordBas = new JPanel(new GridLayout(1, sizeX));
+        for (int x = 0; x < sizeX; x++) {
+            coordBas.add(new JLabel("" + (char) ('A' + x), JLabel.CENTER));
+        }
+
+        JPanel grilleAvecCoord = new JPanel(new BorderLayout());
+        grilleAvecCoord.add(coordGauche, BorderLayout.WEST);
+        grilleAvecCoord.add(coordBas, BorderLayout.SOUTH);
+        grilleAvecCoord.add(grilleJLabels, BorderLayout.CENTER);
+
+        // Timer principal en haut
+        timerLabel = new JLabel("Temps: 0s", JLabel.CENTER);
+        timerLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        timerLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+
+        // Panneau central (timer + grille)
+        JPanel panneauCentral = new JPanel(new BorderLayout());
+        panneauCentral.add(timerLabel, BorderLayout.NORTH);
+        panneauCentral.add(grilleAvecCoord, BorderLayout.CENTER);
+
+        // Panneau joueur blanc
+        JPanel panneauBlanc = new JPanel();
+        panneauBlanc.setLayout(new BoxLayout(panneauBlanc, BoxLayout.Y_AXIS));
+        panneauBlanc.setPreferredSize(new Dimension(120, pxCase * sizeY));
+
+        timerBlancLabel = new JLabel("Blanc: 0s");
+        timerBlancLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        timerBlancLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        panneauBlanc.add(timerBlancLabel);
+        panneauBlanc.add(Box.createVerticalStrut(10));
+        panneauBlanc.add(new JLabel("Capturées :"));
+        piecesBlancCapturées = new JPanel(new FlowLayout());
+        panneauBlanc.add(piecesBlancCapturées);
+
+        // Panneau joueur noir
+        JPanel panneauNoir = new JPanel();
+        panneauNoir.setLayout(new BoxLayout(panneauNoir, BoxLayout.Y_AXIS));
+        panneauNoir.setPreferredSize(new Dimension(120, pxCase * sizeY));
+
+        timerNoirLabel = new JLabel("Noir: 0s");
+        timerNoirLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        timerNoirLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        panneauNoir.add(timerNoirLabel);
+        panneauNoir.add(Box.createVerticalStrut(10));
+        panneauNoir.add(new JLabel("Capturées :"));
+        piecesNoirCapturées = new JPanel(new FlowLayout());
+        panneauNoir.add(piecesNoirCapturées);
+
+        // Organisation de la fenêtre principale
+        getContentPane().setLayout(new BorderLayout());
+        getContentPane().add(panneauBlanc, BorderLayout.WEST);
+        getContentPane().add(panneauNoir, BorderLayout.EAST);
+        getContentPane().add(panneauCentral, BorderLayout.CENTER);
+
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
 
 
