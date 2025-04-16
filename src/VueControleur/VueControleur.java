@@ -149,26 +149,45 @@ public class VueControleur extends JFrame implements Observer {
                 jlab.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
+                        Case caseCliquee = plateau.getCases()[xx][yy];
+
+                        // Premier clic : sélection d'une pièce
                         if (caseClic1 == null) {
-                            caseClic1 = plateau.getCases()[xx][yy];
-                            if (caseClic1.getPiece() != null) {
-                                Piece piece = caseClic1.getPiece();
+                            if (caseCliquee.getPiece() != null) {
+                                Piece piece = caseCliquee.getPiece();
+
+                                // Vérifie si c’est le bon joueur
                                 if ((estTourBlanc && piece.estBlanc) || (!estTourBlanc && !piece.estBlanc)) {
+                                    caseClic1 = caseCliquee;
                                     ArrayList<Case> casesPossibles = calculerCasesPossibles(caseClic1);
                                     surlignerCasesPossibles(casesPossibles);
-                                } else {
-                                    caseClic1 = null;
                                 }
                             }
+
                         } else {
-                            caseClic2 = plateau.getCases()[xx][yy];
+                            // Si on reclique sur la même case => on annule la sélection
+                            if (caseClic1.equals(caseCliquee)) {
+                                resetCouleursCases();
+                                caseClic1 = null;
+                                return;
+                            }
+
+                            // Sinon, c’est un vrai coup
+                            caseClic2 = caseCliquee;
                             jeu.envoyerCoup(new Coup(caseClic1, caseClic2));
-                            estTourBlanc = !estTourBlanc;
+
+                            // Changer de tour uniquement si c'est un coup valide
+                            if (caseClic1.getPiece() != null && !caseClic1.equals(caseClic2)) {
+                                estTourBlanc = !estTourBlanc;  // Changer de tour
+                            }
+
+                            // Réinitialisation
                             resetCouleursCases();
                             caseClic1 = null;
                             caseClic2 = null;
                         }
                     }
+
                 });
 
                 if ((x + y) % 2 == 0) {
