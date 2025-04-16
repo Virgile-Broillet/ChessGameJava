@@ -44,16 +44,17 @@ public class Jeu extends Thread {
         jouerPartie();
     }
 
+    /*
     public void jouerPartie() {
         while (true) {
             Coup c;
             if (tourBlanc) {
                 c = j1.getCoup(); // Le joueur blanc joue
-                if (c.getDepart().getPiece().estBlanc) { // Vérifie que la pièce du joueur blanc est bien sélectionnée
+                Piece piece = c.getDepart().getPiece();
+                if (piece != null && piece.estBlanc) { // On vérifie que la pièce n'est pas null
                     appliquerCoup(c);  // Applique le coup (déplacement)
-                    // Si le coup a été effectué, on met à jour le premier déplacement du pion
-                    if (c.getDepart().getPiece() instanceof Pion) {
-                        ((Pion) c.getDepart().getPiece()).premierDeplacement = false;
+                    if (piece instanceof Pion) {
+                        ((Pion) piece).premierDeplacement = false;
                     }
                     tourBlanc = false;
                 } else {
@@ -61,12 +62,69 @@ public class Jeu extends Thread {
                 }
             } else {
                 c = j2.getCoup(); // Le joueur noir joue
-                if (!c.getDepart().getPiece().estBlanc) { // Vérifie que la pièce du joueur noir est bien sélectionnée
+                Piece piece = c.getDepart().getPiece();
+                if (piece != null && !piece.estBlanc) { // On vérifie que la pièce n'est pas null
                     appliquerCoup(c);  // Applique le coup (déplacement)
-                    // Si le coup a été effectué, on met à jour le premier déplacement du pion
+                    if (piece instanceof Pion) {
+                        ((Pion) piece).premierDeplacement = false;
+                    }
+                    tourBlanc = true;
+                } else {
+                    System.out.println("Ce n'est pas aux blancs de jouer !");
+                }
+            }
+        }
+    }
+    */
+
+    public void jouerPartie() {
+        while (true) {
+            Coup c;
+            if (tourBlanc) {
+                c = j1.getCoup(); // Le joueur blanc joue
+
+                if (c.getDepart().equals(c.getArrivee())) {
+                    System.out.println("Sélection annulée, choisissez une autre pièce.");
+                    continue; // Ne pas changer de tour
+                }
+
+                if (c.getDepart().getPiece() == null) {
+                    System.out.println("Aucune pièce sélectionnée !");
+                    continue;
+                }
+
+                if (c.getDepart().getPiece().estBlanc) {
+                    appliquerCoup(c);
+
                     if (c.getDepart().getPiece() instanceof Pion) {
                         ((Pion) c.getDepart().getPiece()).premierDeplacement = false;
                     }
+
+                    tourBlanc = false;
+                } else {
+                    System.out.println("Ce n'est pas aux noirs de jouer !");
+                }
+
+            } else {
+                c = j2.getCoup(); // Le joueur noir joue
+
+                if (c.getDepart().equals(c.getArrivee())) {
+                    System.out.println("Sélection annulée, choisissez une autre pièce.");
+                    continue; // Ne pas changer de tour
+                }
+
+                if (c.getDepart().getPiece() == null) {
+                    System.out.println("Aucune pièce sélectionnée !");
+                    continue;
+                }
+
+                if (!c.getDepart().getPiece().estBlanc) {
+                    appliquerCoup(c);
+
+                    if (c.getDepart().getPiece() instanceof Pion) {
+                        ((Pion) c.getDepart().getPiece()).premierDeplacement = false;
+                    }
+
                     tourBlanc = true;
                 } else {
                     System.out.println("Ce n'est pas aux blancs de jouer !");
