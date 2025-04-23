@@ -10,10 +10,20 @@ public class Coup {
         arr = _arr;
     }
 
+    /***
+     * @name getDepart()
+     * @brief getter de la case de départ
+     * @return Case
+     */
     public Case getDepart() {
         return dep;
     }
 
+    /***
+     * @name getArrivee()
+     * @brief getter de la case d'arrivee
+     * @return Case
+     */
     public Case getArrivee() {
         return arr;
     }

@@ -29,6 +29,11 @@ public abstract class Piece {
         return this.estBlanc;
     }
     public boolean estCaputuré(){return this.estCaputuré; }
+
+    /***
+     * @name quitterLaCase()
+     * @brief quitte la case et la vide
+     */
     public void quitterLaCase() {
         // Vide la case où la pièce se trouve actuellement
         this.c.setPiece(null); // On enlève la référence de la pièce sur cette case
@@ -36,15 +41,29 @@ public abstract class Piece {
         this.estCaputuré = true;
     }
 
+    /***
+     * @name allerSurCase()
+     * @brief Déplace la piece vers la nouvelles case
+     * @param _c
+     */
     public void allerSurCase(Case _c) {
-        // Déplace la pièce vers la nouvelle case
         this.c = _c;
         _c.setPiece(this);  // La nouvelle case contient désormais cette pièce
     }
 
+    /***
+     * @name getCase()
+     * @brief getter Case
+     * @return
+     */
     public Case getCase() {
         return c;
     }
 
+    /***
+     * @name getPlateau
+     * @brief getter du plateau
+     * @return plateau
+     */
     public Plateau getPlateau() {return this.plateau;}
 }

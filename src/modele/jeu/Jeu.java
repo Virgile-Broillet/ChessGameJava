@@ -21,6 +21,11 @@ public class Jeu extends Thread {
         start();
     }
 
+    /***
+     * @name getPlateau()
+     * @brief getter du PLateau
+     * @return plateau
+     */
     public Plateau getPlateau() {
         return plateau;
     }
@@ -29,6 +34,11 @@ public class Jeu extends Thread {
         plateau.placerPieces();
     }
 
+    /***
+     * @name envoyerCoup()
+     * @brief envoie le coup pour être validée
+     * @param c
+     */
     public void envoyerCoup(Coup c) {
         coupRecu = c;
 
@@ -37,11 +47,23 @@ public class Jeu extends Thread {
         }
     }
 
+    /***
+     * @name appliquerCoup()
+     * @applique le coup après sa validation
+     * @param coup
+     */
     public void appliquerCoup(Coup coup) {
         plateau.deplacerPiece(coup.dep, coup.arr);
     }
 
 
+    /***
+     * @name coupEstValide()
+     * @brief vérifie si le coup est valide
+     * @param coup
+     * @param estBlanc
+     * @return
+     */
     public boolean coupEstValide(Coup coup, boolean estBlanc) {
         Case depart = coup.dep;
         Case arrivee = coup.arr;
@@ -67,12 +89,18 @@ public class Jeu extends Thread {
         return !roiEnEchec;
     }
 
-
-
+    /***
+     * @name run()
+     * @brief lance la partie
+     */
     public void run() {
         jouerPartie();
     }
 
+    /***
+     * @name JouerPartie()
+     * @brief joue la partie
+     */
     public void jouerPartie() {
         while (true) {
             Coup c;
