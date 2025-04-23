@@ -286,7 +286,7 @@ public class Plateau extends Observable {
         depart.quitterLaCase();
         piece.allerSurCase(arrivee);
 
-        // 4. Vérifier l'échec (à implémenter)
+        // 4. Vérifier l'échec
         if (estEnEchec(piece.estBlanc)) {
             System.out.println("Déplacement impossible : le roi serait en échec");
             depart.setPiece(piece);

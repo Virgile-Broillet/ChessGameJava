@@ -1,4 +1,5 @@
 package modele.jeu;
+import modele.plateau.Case;
 import modele.plateau.Plateau;
 
 
@@ -40,42 +41,37 @@ public class Jeu extends Thread {
         plateau.deplacerPiece(coup.dep, coup.arr);
     }
 
+
+    public boolean coupEstValide(Coup coup, boolean estBlanc) {
+        Case depart = coup.dep;
+        Case arrivee = coup.arr;
+
+        Piece pieceADeplacer = depart.getPiece();
+        Piece pieceCapturee = arrivee.getPiece(); // peut être null
+
+        // 1. Appliquer temporairement le coup
+        depart.quitterLaCase();
+        if (pieceCapturee != null) {
+            pieceCapturee.quitterLaCase();
+        }
+        pieceADeplacer.allerSurCase(arrivee);
+
+        // 2. Vérifier si le roi est en échec
+        boolean roiEnEchec = plateau.estEnEchec(estBlanc);
+
+        // 3. Annuler le coup (restaurer l'état)
+        pieceADeplacer.quitterLaCase();
+        arrivee.setPiece(pieceCapturee); // Remettre la pièce capturée si elle existait
+        depart.setPiece(pieceADeplacer);
+
+        return !roiEnEchec;
+    }
+
+
+
     public void run() {
         jouerPartie();
     }
-
-    /*
-    public void jouerPartie() {
-        while (true) {
-            Coup c;
-            if (tourBlanc) {
-                c = j1.getCoup(); // Le joueur blanc joue
-                Piece piece = c.getDepart().getPiece();
-                if (piece != null && piece.estBlanc) { // On vérifie que la pièce n'est pas null
-                    appliquerCoup(c);  // Applique le coup (déplacement)
-                    if (piece instanceof Pion) {
-                        ((Pion) piece).premierDeplacement = false;
-                    }
-                    tourBlanc = false;
-                } else {
-                    System.out.println("Ce n'est pas aux noirs de jouer !");
-                }
-            } else {
-                c = j2.getCoup(); // Le joueur noir joue
-                Piece piece = c.getDepart().getPiece();
-                if (piece != null && !piece.estBlanc) { // On vérifie que la pièce n'est pas null
-                    appliquerCoup(c);  // Applique le coup (déplacement)
-                    if (piece instanceof Pion) {
-                        ((Pion) piece).premierDeplacement = false;
-                    }
-                    tourBlanc = true;
-                } else {
-                    System.out.println("Ce n'est pas aux blancs de jouer !");
-                }
-            }
-        }
-    }
-    */
 
     public void jouerPartie() {
         while (true) {

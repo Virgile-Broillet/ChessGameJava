@@ -61,7 +61,6 @@ public class VueControleur extends JFrame implements Observer {
     private JPanel piecesBlancCapturées;
     private JPanel piecesNoirCapturées;
 
-
     private JLabel[][] tabJLabel; // cases graphique (au moment du rafraichissement, chaque case va être associée à une icône, suivant ce qui est présent dans le modèle)
 
 
@@ -392,19 +391,80 @@ public class VueControleur extends JFrame implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         mettreAJourAffichage();
-        /*
 
-        // récupérer le processus graphique pour rafraichir
-        // (normalement, à l'inverse, a l'appel du modèle depuis le contrôleur, utiliser un autre processus, voir classe Executor)
+        // Vérifie si le roi est en échec après chaque mise à jour
+        boolean roiBlancEnEchec = plateau.estEnEchec(true);
+        boolean roiNoirEnEchec = plateau.estEnEchec(false);
 
+        if (roiBlancEnEchec) {
+            JOptionPane.showMessageDialog(this, "⚠ Le roi BLANC est en échec !", "Échec", JOptionPane.WARNING_MESSAGE);
+            /*
+            // Vérifier si c'est un mat
+            if (estMat(true)) {
+                JOptionPane.showMessageDialog(this, "Le roi BLANC est en MAT ! La partie est terminée.", "Mat", JOptionPane.INFORMATION_MESSAGE);
 
-        SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        mettreAJourAffichage();
-                    }
-                });
-        */
+                // Arrêter le temps
+                stopTimer();
 
+                // Code pour terminer la partie (par exemple, désactiver les entrées utilisateur)
+            }
+            */
+        }
+
+        if (roiNoirEnEchec) {
+            JOptionPane.showMessageDialog(this, "⚠ Le roi NOIR est en échec !", "Échec", JOptionPane.WARNING_MESSAGE);
+            /*
+            // Vérifier si c'est un mat
+            if (estMat(false)) {
+                JOptionPane.showMessageDialog(this, "Le roi NOIR est en MAT ! La partie est terminée.", "Mat", JOptionPane.INFORMATION_MESSAGE);
+
+                // Arrêter le temps
+                stopTimer();
+
+                // Code pour terminer la partie (par exemple, désactiver les entrées utilisateur)
+            }
+             */
+        }
     }
+
+    /*
+    private void stopTimer() {
+        // Arrêter le timer (supposons que timer est un objet qui gère le temps)
+        if (timer != null) {
+            timer.stop();  // Vous pouvez avoir une méthode stop() dans votre classe Timer
+        }
+    }
+    */
+
+    /*
+    private boolean estMat(boolean estBlanc) {
+        // Trouver le roi du joueur
+        Roi roi = plateau.trouverRoi(estBlanc);
+        if (roi == null) return false;  // Si le roi n'existe pas (ce qui est impossible en règle générale)
+
+        // Vérifier si le roi peut se déplacer sur une case non attaquée
+        ArrayList<Case> deplacementsPossibles = roi.getDeplacementsPossibles();
+
+        for (Case casePossible : deplacementsPossibles) {
+            // Déplacer le roi temporairement
+            Piece pieceDepart = casePossible.getPiece();
+            casePossible.setPiece(roi);
+            roi.getCase().setPiece(null);
+
+            // Vérifier si le roi est toujours en échec après ce mouvement
+            boolean roiEnEchec = plateau.estEnEchec(estBlanc);
+
+            // Annuler le déplacement (restaurer l'état)
+            casePossible.setPiece(pieceDepart);
+            roi.getCase().setPiece(roi);
+
+            // Si le roi n'est pas en échec après ce déplacement, ce n'est pas un mat
+            if (!roiEnEchec) {
+                return false;
+            }
+        }
+
+        return true;  // Si aucune case n'est sûre, c'est un mat
+    }
+    */
 }
