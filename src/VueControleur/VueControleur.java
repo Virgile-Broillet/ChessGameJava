@@ -82,6 +82,7 @@ public class VueControleur extends JFrame implements Observer {
         timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Mise à jour du temps du joueur actuel
                 if (estTourBlanc) {
                     tempsBlanc++;
                     timerBlancLabel.setText("Blanc: " + tempsBlanc + "s");
@@ -89,8 +90,13 @@ public class VueControleur extends JFrame implements Observer {
                     tempsNoir++;
                     timerNoirLabel.setText("Noir: " + tempsNoir + "s");
                 }
+
+                // Mise à jour du timer principal (somme des deux temps)
+                int tempsTotal = tempsBlanc + tempsNoir;
+                timerLabel.setText("Temps Total: " + tempsTotal + "s");
             }
         });
+
         timer.start();
     }
 
@@ -217,7 +223,7 @@ public class VueControleur extends JFrame implements Observer {
         grilleAvecCoord.add(grilleJLabels, BorderLayout.CENTER);
 
         // Timer principal en haut
-        timerLabel = new JLabel("Temps: 0s", JLabel.CENTER);
+        timerLabel = new JLabel("Temps Total: 0s", JLabel.CENTER);
         timerLabel.setFont(new Font("Arial", Font.BOLD, 16));
         timerLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 
