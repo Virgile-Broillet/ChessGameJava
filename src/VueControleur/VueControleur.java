@@ -63,14 +63,35 @@ public class VueControleur extends JFrame implements Observer {
 
     private JLabel[][] tabJLabel; // cases graphique (au moment du rafraichissement, chaque case va être associée à une icône, suivant ce qui est présent dans le modèle)
 
+    private void ajouterPieceCapturee(Piece piece) {
+        JLabel icone = new JLabel();
+        icone.setIcon(getIcone(piece));
+
+        if (piece.estBlanc) {
+            piecesNoirCapturées.add(icone);  // Noir capture blanc
+        } else {
+            piecesBlancCapturées.add(icone); // Blanc capture noir
+        }
+
+        revalidate();  // Pour mettre à jour l'affichage
+        repaint();
+    }
+
+    private ImageIcon getIcone(Piece piece) {
+        if (piece instanceof Roi) return piece.estBlanc ? icoRoiBlanc : icoRoiNoir;
+        if (piece instanceof Reine) return piece.estBlanc ? icoReineBlanc : icoReineNoir;
+        if (piece instanceof Cavalier) return piece.estBlanc ? icoCavalierBlanc : icoCavalierNoir;
+        if (piece instanceof Fou) return piece.estBlanc ? icoFouBlanc : icoFouNoir;
+        if (piece instanceof Pion) return piece.estBlanc ? icoPionBlanc : icoPionNoir;
+        if (piece instanceof Tour) return piece.estBlanc ? icoTourBlanc : icoTourNoir;
+        return null;
+    }
 
     public VueControleur(Jeu _jeu) {
         jeu = _jeu;
         plateau = jeu.getPlateau();
         sizeX = Plateau.SIZE_X;
         sizeY = Plateau.SIZE_Y;
-
-
 
         chargerLesIcones();
         placerLesComposantsGraphiques();
@@ -474,3 +495,4 @@ public class VueControleur extends JFrame implements Observer {
     }
     */
 }
+
