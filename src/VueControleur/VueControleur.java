@@ -63,6 +63,11 @@ public class VueControleur extends JFrame implements Observer {
 
     private JLabel[][] tabJLabel; // cases graphique (au moment du rafraichissement, chaque case va être associée à une icône, suivant ce qui est présent dans le modèle)
 
+    /***
+     * @name ajoutertPieceCapturée
+     * @brief ajoute les pieces capturées a une liste
+     * @param piece
+     */
     private void ajouterPieceCapturee(Piece piece) {
         JLabel icone = new JLabel();
         icone.setIcon(getIcone(piece));
@@ -77,6 +82,12 @@ public class VueControleur extends JFrame implements Observer {
         repaint();
     }
 
+    /***
+     * @name getIcone()
+     * @breif récupère les icones des pieces selon leur couleurs
+     * @param piece
+     * @return ImageIcon
+     */
     private ImageIcon getIcone(Piece piece) {
         if (piece instanceof Roi) return piece.estBlanc ? icoRoiBlanc : icoRoiNoir;
         if (piece instanceof Reine) return piece.estBlanc ? icoReineBlanc : icoReineNoir;
@@ -101,6 +112,11 @@ public class VueControleur extends JFrame implements Observer {
         mettreAJourAffichage();
 
         timer = new Timer(1000, new ActionListener() {
+            /***
+             * @name actionPerformed()
+             * @brief gère le texte et le timer sur l'affichage visuel
+             * @param e the event to be processed
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Mise à jour du temps du joueur actuel
@@ -122,6 +138,10 @@ public class VueControleur extends JFrame implements Observer {
     }
 
 
+    /***
+     * @name chargerLesIcones()
+     * @brief charge les images des pièces
+     */
     private void chargerLesIcones() {
 
         icoRoiBlanc = chargerIcone("images/wK.png");
@@ -139,6 +159,11 @@ public class VueControleur extends JFrame implements Observer {
         icoTourNoir = chargerIcone("images/bR.png");
     }
 
+    /***
+     * @name chargerIcones
+     * @param urlIcone
+     * @return
+     */
     private ImageIcon chargerIcone(String urlIcone) {
         BufferedImage image = null;
 
@@ -152,6 +177,10 @@ public class VueControleur extends JFrame implements Observer {
     }
 
 
+    /***
+     * @name placerLesComposentsGraphiques()
+     * @brief place les composants sur l'échiquier, le timer et tous le reste dans la fenêtre
+     */
     private void placerLesComposantsGraphiques() {
         setTitle("Jeu d'Échecs");
         setResizable(false);
@@ -346,7 +375,12 @@ public class VueControleur extends JFrame implements Observer {
         }
     }
 
-    // Fonction qui surligne les cases accessibles en changeant leur couleur
+
+    /***
+     * @name surlignerCasesPossibles()
+     * @brief Fonction qui surligne les cases accessibles en changeant leur couleur
+     * @param casesPossibles
+     */
     private void surlignerCasesPossibles(ArrayList<Case> casesPossibles) {
         // D'abord, réinitialiser la couleur des cases (retourner au damier initial)
         resetCouleursCases();
@@ -359,7 +393,10 @@ public class VueControleur extends JFrame implements Observer {
         }
     }
 
-    // Fonction pour réinitialiser les couleurs des cases du plateau (damier classique)
+    /***
+     * @name resetCouleurCases()
+     * @brief Fonction pour réinitialiser les couleurs des cases du plateau (damier classique)
+     */
     private void resetCouleursCases() {
         // Parcourir chaque case du plateau
         for (int x = 0; x < sizeX; x++) {
@@ -374,7 +411,12 @@ public class VueControleur extends JFrame implements Observer {
         }
     }
 
-    // Exemple de calcul des cases accessibles pour chaque pièce
+    /***
+     * name()calculerCasesPossibles()
+     * @brief Exemple de calcul des cases accessibles pour chaque pièce
+     * @param caseClic1
+     * @return ArrayList<Case>
+     */
     private ArrayList<Case> calculerCasesPossibles(Case caseClic1) {
         ArrayList<Case> casesPossibles = new ArrayList<>();
         Piece piece = caseClic1.getPiece();
