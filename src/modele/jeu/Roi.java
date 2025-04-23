@@ -11,6 +11,11 @@ public class Roi extends Piece {
         super(_plateau, _estBlanc);
     }
 
+    /***
+     * @name getDéplacementPossible()
+     * @brief Override de la fonction pour gérer les déplacement possible spécifique
+     * @return ArrayList<Case>
+     */
     @Override
     public ArrayList<Case> getDeplacementsPossibles() {
         ArrayList<Case> deplacements = new ArrayList<>();
@@ -51,8 +56,11 @@ public class Roi extends Piece {
 
 
 
-    /**
-     * Vérifie si le déplacement du roi sur la case cible le met en échec.
+    /***
+     * @name deplacementMetEnEchec()
+     * @param caseCible
+     * @brief Vérifie si le déplacement du roi sur la case cible le met en échec.
+     * @return boolean
      */
     private boolean deplacementMetEnEchec(Case caseCible) {
         Case anciennePosition = this.getCase();
@@ -71,8 +79,10 @@ public class Roi extends Piece {
         return enEchec;
     }
 
-    /**
-     * Vérifie si le Roi est en échec.
+    /***
+     * @name estEnEchec()
+     * @brief Vérifie si le Roi est en échec.
+     * @return boolean
      */
     public boolean estEnEchec() {
         Case positionRoi = this.getCase();

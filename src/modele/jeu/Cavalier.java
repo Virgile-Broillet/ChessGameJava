@@ -11,6 +11,11 @@ public class Cavalier extends Piece {
         super(_plateau, _estBlanc);
     }
 
+    /***
+     * @name getDéplacementPossible()
+     * @brief Override de la fonction pour gérer les déplacement possible spécifique
+     * @return ArrayList<Case>
+     */
     @Override
     public ArrayList<Case> getDeplacementsPossibles() {
         ArrayList<Case> deplacements = new ArrayList<>();

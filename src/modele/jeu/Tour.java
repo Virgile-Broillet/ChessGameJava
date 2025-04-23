@@ -11,6 +11,11 @@ public class Tour extends Piece {
         super(plateau, estBlanc);
     }
 
+    /***
+     * @name getDéplacementPossible()
+     * @brief Override de la fonction pour gérer les déplacement possible spécifique
+     * @return ArrayList<Case>
+     */
     @Override
     public List<Case> getDeplacementsPossibles() {
         List<Case> deplacements = new ArrayList<>();
@@ -30,6 +35,11 @@ public class Tour extends Piece {
         return deplacements;
     }
 
+    /***
+     * @name convertirCoordEnCases()
+     * @param coord
+     * @return Case
+     */
     private Case convertirCoordEnCase(String coord) {
         if (coord.length() != 2) return null;
         char colonne = coord.charAt(0);

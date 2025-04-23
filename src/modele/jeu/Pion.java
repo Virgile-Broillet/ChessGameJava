@@ -13,6 +13,11 @@ public class Pion extends Piece {
         super(_plateau, _estBlanc);
     }
 
+    /***
+     * @name getDéplacementPossible()
+     * @brief Override de la fonction pour gérer les déplacement possible spécifique
+     * @return ArrayList<Case>
+     */
     @Override
     public ArrayList<Case> getDeplacementsPossibles() {
         ArrayList<Case> deplacements = new ArrayList<>();
@@ -54,7 +59,11 @@ public class Pion extends Piece {
         return deplacements;
     }
 
-    // Méthode pour déplacer le pion et mettre à jour l'état de son premier déplacement
+    /***
+     * @name deplacer
+     * @brief Méthode pour déplacer le pion et mettre à jour l'état de son premier déplacement
+     * @param destination
+     */
     public void deplacer(Case destination) {
         super.allerSurCase(destination);
         premierDeplacement = false; // Désactive le premier déplacement une fois qu'il a été effectué
