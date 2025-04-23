@@ -16,6 +16,7 @@ public abstract class Piece {
     protected Plateau plateau;
     protected DecorateurCasesAccessibles decorateurCasesAccessibles;
     public Boolean estBlanc;
+    protected Boolean estCaputuré = false;
 
     public abstract List<Case> getDeplacementsPossibles();
 
@@ -27,11 +28,12 @@ public abstract class Piece {
     public boolean estBlanc() {
         return this.estBlanc;
     }
-
+    public boolean estCaputuré(){return this.estCaputuré; }
     public void quitterLaCase() {
         // Vide la case où la pièce se trouve actuellement
         this.c.setPiece(null); // On enlève la référence de la pièce sur cette case
         this.c = null; // La pièce ne sait plus où elle est
+        this.estCaputuré = true;
     }
 
     public void allerSurCase(Case _c) {
