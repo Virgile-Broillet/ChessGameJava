@@ -13,10 +13,6 @@ public class DecorateurCasesAccessiblesBase {
         this.plateau = plateau;
     }
 
-    public DecorateurCasesAccessiblesBase() {
-
-    }
-
     // Méthode pour accéder au plateau si nécessaire
     public Plateau getPlateau() {
         return plateau;

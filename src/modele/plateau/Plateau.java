@@ -22,14 +22,30 @@ public class Plateau extends Observable {
     protected HashMap<Case, Point> map = new  HashMap<Case, Point>(); // permet de récupérer la position d'une case à partir de sa référence
     private Case[][] grilleCases = new Case[SIZE_X][SIZE_Y]; // permet de récupérer une case à partir de ses coordonnées
 
+    /***
+     * @name Plateau()
+     * @brief Constructeur du Plateau
+     */
     public Plateau() {
         initPlateauVide();
     }
 
+    /***
+     * @name getCases()
+     * @brief renvoie la grise des cases
+     * @return Case[][]
+     */
     public Case[][] getCases() {
         return grilleCases;
     }
 
+    /***
+     * @name getCases()
+     * @brief renvoie une cases spécifique
+     * @param x
+     * @param y
+     * @return grilleCases[][]
+     */
     public Case getCase(int x, int y) {
         if (x >= 0 && x < 8 && y >= 0 && y < 8) {
             return grilleCases[x][y];  // Retourne la case correspondante
@@ -37,6 +53,10 @@ public class Plateau extends Observable {
         return null;  // Si les coordonnées sont hors du plateau
     }
 
+    /***
+     * @name initPlateauVide()
+     * @brief initialise le plateau d'echec vide
+     */
     private void initPlateauVide() {
 
         for (int x = 0; x < SIZE_X; x++) {
@@ -49,6 +69,12 @@ public class Plateau extends Observable {
 
     }
 
+    /***
+     * @name trouverRoi
+     * @brief trouve le Roi parmis les cases sur l'échiquier
+     * @param estBlanc
+     * @return
+     */
     public Roi trouverRoi(boolean estBlanc) {
         // Parcourir toutes les cases du plateau
         for (int x = 0; x < Plateau.SIZE_X; x++) {
@@ -66,8 +92,13 @@ public class Plateau extends Observable {
     }
 
 
+    /***
+     * @name estEnEchec()
+     * @brief verifie si le Roi est en echec
+     * @param estBlanc
+     * @return
+     */
     public boolean estEnEchec(boolean estBlanc) {
-        // Trouver le roi du joueur
         Roi roi = trouverRoi(estBlanc);
         if (roi == null) return false;  // Si le roi n'existe pas (ce qui est impossible en règle générale)
 
@@ -90,6 +121,10 @@ public class Plateau extends Observable {
         return false;  // Le roi n'est pas en échec
     }
 
+    /***
+     * @name placerPiece()
+     * @brief Initialise la position des pièces sur l'échiquier
+     */
     public void placerPieces() {
         Roi roiB = new Roi(this, true);
         Reine reineB = new Reine(this, true);
@@ -235,13 +270,13 @@ public class Plateau extends Observable {
         notifyObservers();
     }
 
-    public void arriverCase(Case c, Piece p) {
 
-        c.setPiece(p);
-
-    }
-
-    // Dans Plateau.java
+    /***
+     * @name déplacerPiece()
+     * @breif permet le déplacement des pièeces selon les conditions de celles-ci
+     * @param depart
+     * @param arrivee
+     */
     public void deplacerPiece(Case depart, Case arrivee) {
         if (depart == null || arrivee == null) {
             System.out.println("Case invalide");
@@ -299,11 +334,26 @@ public class Plateau extends Observable {
     }
 
 
+    /***
+     * @name estCaseLibre
+     * @brief vérifie si la case au coordonées x, y ets libre
+     * @param x
+     * @param y
+     * @return boolean
+     */
     public boolean estCaseLibre(int x, int y) {
         Case caseCible = grilleCases[x][y];
         return caseCible.estLibre();
     }
 
+    /***
+     * @name estCAsesOccupeeParAdversaire()
+     * @brief vérifie si la case au possition x, y ets occupée par la piece piece
+     * @param x
+     * @param y
+     * @param piece
+     * @return boolean
+     */
     public boolean estCaseOccupeeParAdversaire(int x, int y, Piece piece) {
         // Vérifie si la case est dans les limites du plateau
         if (x >= 0 && x < 8 && y >= 0 && y < 8) {
@@ -318,7 +368,11 @@ public class Plateau extends Observable {
         return false;  // Retourne false si la case est vide ou hors du plateau
     }
 
-    /** Indique si p est contenu dans la grille
+    /***
+     * @name contenuDansGrille()
+     * @brief indique si p ets contenu dans le grille
+     * @param p
+     * @return boolean
      */
     private boolean contenuDansGrille(Point p) {
         return p.x >= 0 && p.x < SIZE_X && p.y >= 0 && p.y < SIZE_Y;
@@ -333,6 +387,12 @@ public class Plateau extends Observable {
         return retour;
     }
 
+    /***
+     * @name getPieceAdverses()
+     * @brief renvoie une liste des piece adverses
+     * @param piece
+     * @return ArrayList<Piece>
+     */
     public ArrayList<Piece> getPiecesAdverses(Piece piece) {
         ArrayList<Piece> piecesAdverses = new ArrayList<>();
 
@@ -349,6 +409,13 @@ public class Plateau extends Observable {
         return piecesAdverses;
     }
 
+    /***
+     * @name estCasesMenacee()
+     * @brief renvoie true si la case est menacée, false sinon
+     * @param caseCible
+     * @param parBlanc
+     * @return boolean
+     */
     public boolean estCaseMenacee(Case caseCible, boolean parBlanc) {
         for (int x = 0; x < SIZE_X; x++) {
             for (int y = 0; y < SIZE_Y; y++) {
@@ -367,10 +434,13 @@ public class Plateau extends Observable {
         return false;
     }
 
-
-
-
-
+    /***
+     * @name estDansLesLimites()
+     * @brief vérifie si la position x, y est dans les limites de l'échiquier
+     * @param x
+     * @param y
+     * @return boolean
+     */
     public boolean estDansLesLimites(int x, int y) {
         return x >= 0 && x < SIZE_X && y >= 0 && y < SIZE_Y;
     }

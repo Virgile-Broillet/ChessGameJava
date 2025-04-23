@@ -6,10 +6,21 @@ import java.util.ArrayList;
 
 public class DecorateurCasesEnLigne extends DecorateurCasesAccessibles {
 
+    /***
+     * @name DecorateurCasesEnLigne()
+     * @brief constructeur avec le decorateur de base et la piece
+     * @param baseDecorateur
+     * @param piece
+     */
     public DecorateurCasesEnLigne(DecorateurCasesAccessibles baseDecorateur, Piece piece) {
         super(baseDecorateur, piece);
     }
 
+    /***
+     * @name getMesCasesPossibles()
+     * @brief Override de la fonction pour retourner les cases possible en fonction des déplacement de ce décorateur (ligne)
+     * @return ArrayList<String>
+     */
     @Override
     public ArrayList<String> getMesCasesPossibles() {
         ArrayList<String> casesPossibles = new ArrayList<>();
@@ -43,6 +54,14 @@ public class DecorateurCasesEnLigne extends DecorateurCasesAccessibles {
         return casesPossibles;
     }
 
+    /***
+     * @name AjouterSiPossible()
+     * @brief Ajoute la case si elle est libre ou occupée par une piece ennemis
+     * @param liste
+     * @param x
+     * @param y
+     * @return boolean
+     */
     private boolean ajouterSiPossible(ArrayList<String> liste, int x, int y) {
         if (!piece.getPlateau().estDansLesLimites(x, y)) return false;
 
