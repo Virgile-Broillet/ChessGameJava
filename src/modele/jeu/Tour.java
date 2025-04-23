@@ -1,84 +1,48 @@
 package modele.jeu;
 
-import modele.plateau.Case;
-import modele.plateau.Plateau;
+import modele.plateau.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Tour extends Piece {
 
-    public Tour(Plateau _plateau, boolean _estBlanc) {
-        super(_plateau, _estBlanc);
+    public Tour(Plateau plateau, boolean estBlanc) {
+        super(plateau, estBlanc);
     }
 
     @Override
-    public ArrayList<Case> getDeplacementsPossibles() {
-        ArrayList<Case> deplacements = new ArrayList<>();
-        Case positionActuelle = this.getCase();
+    public List<Case> getDeplacementsPossibles() {
+        List<Case> deplacements = new ArrayList<>();
 
-        if (positionActuelle == null) return deplacements;
+        // Utilisation du décorateur linéaire uniquement
+        DecorateurCasesAccessibles decorateur = new DecorateurCasesEnLigne(null, this);
 
-        int x = positionActuelle.getX();
-        int y = positionActuelle.getY();
+        ArrayList<ArrayList<String>> toutesLesCases = decorateur.getCasesPossibles();
 
-        // Déplacements en ligne droite (horizontal et vertical)
-        // Haut
-        for (int i = y - 1; i >= 0; i--) {
-            Case caseCible = plateau.getCase(x, i);
-            if (caseCible.estLibre()) {
-                deplacements.add(caseCible);
-            } else if (plateau.estCaseOccupeeParAdversaire(x, i, this)) {
-                deplacements.add(caseCible);
-                break; // Une pièce adverse peut être capturée
-            } else {
-                break; // Bloqué par une pièce alliée
-            }
-        }
-
-        // Bas
-        for (int i = y + 1; i < 8; i++) {
-            Case caseCible = plateau.getCase(x, i);
-            if (caseCible.estLibre()) {
-                deplacements.add(caseCible);
-            } else if (plateau.estCaseOccupeeParAdversaire(x, i, this)) {
-                deplacements.add(caseCible);
-                break; // Une pièce adverse peut être capturée
-            } else {
-                break; // Bloqué par une pièce alliée
-            }
-        }
-
-        // Gauche
-        for (int i = x - 1; i >= 0; i--) {
-            Case caseCible = plateau.getCase(i, y);
-            if (caseCible.estLibre()) {
-                deplacements.add(caseCible);
-            } else if (plateau.estCaseOccupeeParAdversaire(i, y, this)) {
-                deplacements.add(caseCible);
-                break; // Une pièce adverse peut être capturée
-            } else {
-                break; // Bloqué par une pièce alliée
-            }
-        }
-
-        // Droite
-        for (int i = x + 1; i < 8; i++) {
-            Case caseCible = plateau.getCase(i, y);
-            if (caseCible.estLibre()) {
-                deplacements.add(caseCible);
-            } else if (plateau.estCaseOccupeeParAdversaire(i, y, this)) {
-                deplacements.add(caseCible);
-                break; // Une pièce adverse peut être capturée
-            } else {
-                break; // Bloqué par une pièce alliée
+        for (ArrayList<String> chemin : toutesLesCases) {
+            for (String coord : chemin) {
+                Case c = convertirCoordEnCase(coord);
+                if (c != null) deplacements.add(c);
             }
         }
 
         return deplacements;
     }
 
+    private Case convertirCoordEnCase(String coord) {
+        if (coord.length() != 2) return null;
+        char colonne = coord.charAt(0);
+        int ligne = Character.getNumericValue(coord.charAt(1));
+
+        int x = colonne - 'A';
+        int y = 8 - ligne;
+
+        return plateau.getCase(x, y);
+    }
+
     @Override
     public String toString() {
-        return estBlanc ? "♖" : "♜";
+        return estBlanc ? "♗" : "♝";
     }
 }

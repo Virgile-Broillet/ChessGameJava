@@ -383,7 +383,7 @@ public class VueControleur extends JFrame implements Observer {
 
         // Si la pièce est une Tour
         else if (piece instanceof Tour) {
-            casesPossibles = ((Tour) piece).getDeplacementsPossibles();
+            casesPossibles = (ArrayList<Case>) ((Tour) piece).getDeplacementsPossibles();
         }
 
         if (piece instanceof Pion) {

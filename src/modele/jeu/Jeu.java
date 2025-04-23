@@ -8,7 +8,7 @@ public class Jeu extends Thread {
     private Joueur j1;
     private Joueur j2;
     protected Coup coupRecu;
-    private boolean tourBlanc = true;
+    public boolean tourBlanc = true;
 
     public Jeu() {
         plateau = new Plateau();
